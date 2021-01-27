@@ -79,7 +79,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </GridPane.margin>
                   </Label>
-                  <TextField style="-fx-background-color: #FF0000;" text="1.12.2020" GridPane.columnIndex="1">
+                  <TextField style="-fx-background-color: #F0000;" text="1.12.2020" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </GridPane.margin>
@@ -91,15 +91,14 @@
                   </TextField>
                </children>
             </GridPane>
-            <Label alignment="CENTER" layoutX="4.0" layoutY="193.0" prefHeight="17.0" prefWidth="193.0" style="-fx-background-color: #FF0000;" text="Päivä: merkki ei kelpaa" />
          </children>
       </AnchorPane>
    </center>
    <bottom>
-      <ButtonBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <ButtonBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0">
         <buttons>
           <Button alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="OK" />
-            <Button cancelButton="true" mnemonicParsing="false" text="Cancel" />
+            <Button cancelButton="true" minWidth="48.0" mnemonicParsing="false" prefHeight="25.0" text="Cancel" />
         </buttons>
       </ButtonBar>
    </bottom>
