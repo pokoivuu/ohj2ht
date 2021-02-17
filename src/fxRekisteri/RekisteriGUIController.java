@@ -96,7 +96,6 @@ public class RekisteriGUIController {
     }
     
     
-    
 
     private void virhe(String virhe) {
         if (virhe == null || virhe.isEmpty() ) {

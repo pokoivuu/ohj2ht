@@ -144,11 +144,11 @@
                   <Label text="Lämpötila" />
                   <Label text="Sademäärä" GridPane.rowIndex="1" />
                   <Label text="Kosteus" GridPane.rowIndex="2" />
-                  <TextField text="-21C" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" />
-                  <TextField text="69mm" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
-                  <TextField text="100%" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+                  <TextField text="-21C" GridPane.columnIndex="1" editable = "false" GridPane.hgrow="ALWAYS" />
+                  <TextField text="69mm" GridPane.columnIndex="1" editable = "false" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                  <TextField text="100%" GridPane.columnIndex="1" editable = "false" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
                   <Label text="Tuulen nopeus" GridPane.rowIndex="3" />
-                  <TextField text="40m/s" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <TextField text="40m/s" GridPane.columnIndex="1" editable = "false" GridPane.rowIndex="3" />
                </children>
             </GridPane>
          </content>

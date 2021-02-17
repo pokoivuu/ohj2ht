@@ -8,18 +8,17 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/15.0.1">
+<BorderPane xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <bottom>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <ButtonBar layoutX="146.0" layoutY="160.0" prefHeight="40.0" prefWidth="200.0">
               <buttons>
-                <Button mnemonicParsing="false" text="OK" />
-                  <Button mnemonicParsing="false" text="Cancel" />
+                <Button mnemonicParsing="false" onAction="#handleOK" text="OK" />
+                  <Button mnemonicParsing="false" onAction="#handleCancel" text="Cancel" />
               </buttons>
             </ButtonBar>
-            <TextField layoutX="35.0" layoutY="125.0" prefHeight="25.0" prefWidth="288.0" text="2020-2021" />
+            <TextField fx:id="textVastaus" layoutX="35.0" layoutY="125.0" prefHeight="25.0" prefWidth="288.0" text="2020-2021" />
             <Label layoutX="35.0" layoutY="100.0" text="Anna rekisteri" />
          </children>
       </AnchorPane>
