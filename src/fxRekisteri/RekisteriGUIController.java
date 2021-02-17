@@ -29,6 +29,7 @@ import javafx.scene.control.TextField;
 public class RekisteriGUIController {
     @FXML private TextField HakuField;
     @FXML private ComboBoxChooser<String> cbPaikka;
+    @FXML private Label labelVirhe;
     
     private String rekisterinimi = "2020-2021";
     
@@ -40,15 +41,77 @@ public class RekisteriGUIController {
         //      
     }
     
-
-    @FXML private void handleHaku () {
-        String haku = cbPaikka.getSelectedText();
-        
+    @FXML private void handleMenuTallenna() {
+        tallenna();
+    }
+    
+    
+    @FXML private void handleMenuAvaa() {
+        avaa();
+    }
+    
+    @FXML private void handleMenuLopetus() {
+        tallenna();
+        Platform.exit();
+    }
+    
+    
+    @FXML private void handleMenuLisaa() {
+        Dialogs.showMessageDialog("Ei toimi vielä");
+    }
+    
+    
+    @FXML private void handleMenuPoista() {
+        Dialogs.showMessageDialog("Ei toimi vielä");
+    }
+    
+    
+    @FXML private void handleMenuApua() {
+        Dialogs.showMessageDialog("Ei toimi vielä");
     }
     
     
     @FXML private void handleMenuTietoja() {        
         ModalController.showModal(RekisteriGUIController.class.getResource("TietoView.fxml"), "saarekisteri", null, "");
     }
+    
+    
+    @FXML private void handleMuokkaaHuomio() {
+        Dialogs.showMessageDialog("Ei toimi vielä");
+    }
+    
+    @FXML private void handleUusiPaiva() {
+        Dialogs.showMessageDialog("Ei toimi vielä");
+    }
+    
+    
+    
+    @FXML private void handleHaku () {
+        String haku = cbPaikka.getSelectedText();
+        String hakuehto = HakuField.getText();
+        if (hakuehto.isEmpty())
+            virhe(null);
+        else 
+            virhe("Ei osata vielä hakea " + haku + ": " + hakuehto);
+    }
+    
+    
+    
 
+    private void virhe(String virhe) {
+        if (virhe == null || virhe.isEmpty() ) {
+            labelVirhe.setText("");
+            labelVirhe.getStyleClass().removeAll("virhe");
+            return;
+        }
+    }
+    
+        
+    public boolean avaa() {
+        String nimi = RekisteriNimiController.kysyNimi(null, rekisterimi);
+        if (nimi == null) return false;
+        lueTiedosto(uusinimi);
+        return true;
+    }
+    
 }
