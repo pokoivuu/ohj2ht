@@ -26,7 +26,7 @@
          </BorderPane.margin>
          <children>
             <Button fx:id="UusiPaiva" mnemonicParsing="false" onAction="#handleUusiPaiva" text="Uusi päivä" />
-            <Button fx:id="Tallenna" mnemonicParsing="false" text="Tallenna" />
+            <Button mnemonicParsing="false" onAction="#handleMenuTallenna" text="Tallenna" />
          </children>
       </HBox>
    </bottom>
@@ -37,12 +37,13 @@
             <items>
               <MenuItem fx:id="MenuTallenna" mnemonicParsing="false" text="Tallenna" />
                   <MenuItem fx:id="MenuAvaa" mnemonicParsing="false" text="Avaa..." />
-                  <MenuItem fx:id="MenuLopeta" mnemonicParsing="false" text="Lopeta" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuLopeta" text="Lopeta" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Muokkaa">
             <items>
                   <MenuItem fx:id="MenuLisaa" mnemonicParsing="false" onAction="#handleMenuLisaa" text="Lisää päivä" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuMuokkaa" text="Muokkaa päivää" />
               <MenuItem fx:id="MenuPoista" mnemonicParsing="false" onAction="#handleMenuPoista" text="Poista päivä..." />
             </items>
           </Menu>
@@ -81,7 +82,7 @@
                   </BorderPane>
                </bottom>
                <center>
-                  <TextField fx:id="HakuField" prefHeight="25.0" prefWidth="146.0" BorderPane.alignment="CENTER" />
+                  <TextField fx:id="hakuField" onAction="#handleHaku" prefHeight="25.0" prefWidth="146.0" BorderPane.alignment="CENTER" />
                </center>
             </BorderPane>
          </top>
@@ -124,6 +125,7 @@
       </BorderPane>
    </right>
    <center>
+<<<<<<< HEAD
       <ScrollPane fitToWidth="true" prefHeight="191.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <content>
             <GridPane hgap="10.0" prefWidth="185.0">
@@ -153,5 +155,45 @@
             </GridPane>
          </content>
       </ScrollPane>
+=======
+      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <center>
+            <ScrollPane fitToWidth="true" prefHeight="191.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <content>
+                  <GridPane hgap="10.0" prefWidth="185.0">
+                    <columnConstraints>
+                      <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="ALWAYS" maxWidth="72.0" minWidth="68.0" prefWidth="68.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <padding>
+                        <Insets left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                     <children>
+                        <Label text="Lämpötila" GridPane.rowIndex="1" />
+                        <Label text="Sademäärä" GridPane.rowIndex="2" />
+                        <Label text="Kosteus" GridPane.rowIndex="3" />
+                        <TextField text="-21C" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                        <TextField text="69mm" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+                        <TextField text="100%" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
+                        <Label text="Tuulen nopeus" GridPane.rowIndex="4" />
+                        <TextField text="40m/s" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                     </children>
+                  </GridPane>
+               </content>
+            </ScrollPane>
+         </center>
+         <bottom>
+            <Label fx:id="labelVirhe" prefHeight="17.0" prefWidth="250.0" BorderPane.alignment="CENTER" />
+         </bottom>
+      </BorderPane>
+>>>>>>> 35f8b28ece8ee583348d44d71c734254ee6f48af
    </center>
 </BorderPane>
