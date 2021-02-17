@@ -26,17 +26,15 @@ import javafx.scene.control.TextField;
  * @version 17 Feb 2021
  *
  */
-public class RekisteriGUIController {
-    @FXML private TextField HakuField;
+public class RekisteriGUIController implements Initializable {
+    @FXML private TextField hakuField;
     @FXML private ComboBoxChooser<String> cbPaikka;
     @FXML private Label labelVirhe;
     
     private String rekisterinimi = "2020-2021";
     
-    /**
-     * @param url ?
-     * @param bundle ?
-     */
+ 
+    @Override
     public void initialize(URL url, ResourceBundle bundle) {
         //      
     }
@@ -50,7 +48,7 @@ public class RekisteriGUIController {
         avaa();
     }
     
-    @FXML private void handleMenuLopetus() {
+    @FXML private void handleMenuLopeta() {
         tallenna();
         Platform.exit();
     }
@@ -60,6 +58,10 @@ public class RekisteriGUIController {
         Dialogs.showMessageDialog("Ei toimi vielä");
     }
     
+    
+    @FXML private void handleMenuMuokkaa() {
+        ModalController.showModal(RekisteriGUIController.class.getResource("MuokkausView.fxml"), "saarekisteri", null, "");
+    }
     
     @FXML private void handleMenuPoista() {
         Dialogs.showMessageDialog("Ei toimi vielä");
@@ -88,7 +90,7 @@ public class RekisteriGUIController {
     
     @FXML private void handleHaku () {
         String haku = cbPaikka.getSelectedText();
-        String hakuehto = HakuField.getText();
+        String hakuehto = hakuField.getText();
         if (hakuehto.isEmpty())
             virhe(null);
         else 
@@ -104,6 +106,8 @@ public class RekisteriGUIController {
             labelVirhe.getStyleClass().removeAll("virhe");
             return;
         }
+        labelVirhe.setText(virhe);
+        labelVirhe.getStyleClass().add("virhe");
     }
     
         
@@ -113,6 +117,20 @@ public class RekisteriGUIController {
         lueTiedosto(nimi);
         return true;
     }
+    
+    
+    private void setTitle(String title) {
+        ModalController.getStage(hakuField).setTitle(title);
+    }
+    
+    
+    protected void lueTiedosto(String nimi) {
+        rekisterinimi = nimi;
+        setTitle("Rekisteri - " + rekisterinimi);
+        String virhe = "Ei toimi vielä";
+            Dialogs.showMessageDialog(virhe);
+    }
+    
     
     private void tallenna() {
         Dialogs.showMessageDialog("Tallennus ei toimi vielä");
