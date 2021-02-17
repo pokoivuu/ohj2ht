@@ -140,5 +140,11 @@ public class RekisteriGUIController implements Initializable {
         tallenna();
         return true;
     }
+    
+
+    @FXML private void handleAvaa() {
+        avaa();
+    }
+    
 
 }
