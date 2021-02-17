@@ -44,7 +44,7 @@ public class RekisteriNimiController implements ModalControllerInterface<String>
     public static String kysyNimi(Stage modalityStage, String oletus) {
         return ModalController.showModal(
                 RekisteriNimiController.class.getResource("MainView.fxml"),
-                "Saarekisteri",
+                "saarekisteri",
                 modalityStage, oletus);
     }
 }
