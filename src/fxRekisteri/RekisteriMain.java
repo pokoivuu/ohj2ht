@@ -9,7 +9,7 @@ import javafx.fxml.FXMLLoader;
 
 
 /**
- * @author teemu ja pauli
+ * @author Teemu Kupiainen ja Pauli Koivuniemi
  * @version 17.2.2021
  *
  * Pääohjelma Säärekisteri-ohjelman käynnistämiseksi

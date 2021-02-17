@@ -1,5 +1,5 @@
 /**
- * Sample Skeleton for 'RekisteriGUIView.fxml' Controller Class
+ * Rekisterin käyttöliittymälle kontrolleriluokka
  */
 
 package fxRekisteri;
@@ -33,7 +33,7 @@ public class RekisteriGUIController implements Initializable {
     
     private String rekisterinimi = "2020-2021";
     
- 
+    
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
         //      
@@ -126,6 +126,10 @@ public class RekisteriGUIController implements Initializable {
     }
     
     
+    /**
+     * Tiedoston nimen kysely ja lukeminen
+     * @return onnistuiko tiedoston avaus vai ei; true tai false
+     */
     public boolean avaa() {
         String nimi = RekisteriNimiController.kysyNimi(null, rekisterinimi);
         if (nimi == null) return false;
@@ -134,6 +138,10 @@ public class RekisteriGUIController implements Initializable {
     }
     
     
+    /**
+     * Luetaan rekisteri oikeannimisestä tiedostosta
+     * @param nimi Luettava nimi
+     */
     protected void lueTiedosto(String nimi) {
         rekisterinimi = nimi;
         setTitle("Rekisteri - " + rekisterinimi);
@@ -141,12 +149,18 @@ public class RekisteriGUIController implements Initializable {
             Dialogs.showMessageDialog(virhe);
     }
     
-    
+    /**
+     * Tallennusmetodi
+     */
     private void tallenna() {
         Dialogs.showMessageDialog("Tallennus ei toimi vielä");
     }
     
     
+    /**
+     * Tarkastetaan voidaanko sulkea eli onko tallennettu
+     * @return Tallennustila, true tai false 
+     */
     public boolean saakoSulkea() {
         tallenna();
         return true;
