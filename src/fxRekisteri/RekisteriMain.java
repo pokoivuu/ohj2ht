@@ -9,8 +9,10 @@ import javafx.fxml.FXMLLoader;
 
 
 /**
- * @author teemu
+ * @author teemu ja pauli
  * @version 17.2.2021
+ *
+ * Pääohjelma Säärekisteri-ohjelman käynnistämiseksi
  *
  */
 public class RekisteriMain extends Application {
@@ -33,6 +35,7 @@ public class RekisteriMain extends Application {
     }
 
     /**
+     * Käynnistetään käyttöliittymä
      * @param args Ei käytössä
      */
     public static void main(String[] args) {

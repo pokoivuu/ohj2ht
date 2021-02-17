@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 /**
+ * Dialogi rekisterin nimeä varten
  * 
  * @author Pauli Koivuniemi ja Teemu Kupiainen
  * @version 17.2.2021
@@ -36,11 +37,21 @@ public class RekisteriNimiController implements ModalControllerInterface<String>
         textVastaus.setText(oletus);
     }
     
+    /*
+     * Mitä tehdään näyttämisen jälkeen
+     */
+   
     @Override
     public void handleShown() {
         textVastaus.requestFocus();
     }
     
+    /**
+     * Dialogi nimen kysymiselle, joka palauttaa nimen tai null
+     * @param modalityStage mille ollaan modaalisia
+     * @param oletus mikä nimi oletuksena
+     * @return null jos painetaan cancel, muuten kirjoitetaan nimi
+     */
     public static String kysyNimi(Stage modalityStage, String oletus) {
         return ModalController.showModal(
                 RekisteriNimiController.class.getResource("MainView.fxml"),
