@@ -60,7 +60,7 @@ public class RekisteriGUIController implements Initializable {
     
     
     @FXML private void handleMenuMuokkaa() {
-        ModalController.showModal(RekisteriGUIController.class.getResource("MuokkausView.fxml"), "saarekisteri", null, "");
+        ModalController.showModal(RekisteriGUIController.class.getResource("MuokkausView.fxml"), "Muokkaus", null, "");
     }
     
     @FXML private void handleMenuPoista() {
@@ -110,16 +110,16 @@ public class RekisteriGUIController implements Initializable {
     }
     
         
+    private void setTitle(String title) {
+        ModalController.getStage(hakuField).setTitle(title);
+    }
+    
+    
     public boolean avaa() {
         String nimi = RekisteriNimiController.kysyNimi(null, rekisterinimi);
         if (nimi == null) return false;
         lueTiedosto(nimi);
         return true;
-    }
-    
-    
-    private void setTitle(String title) {
-        ModalController.getStage(hakuField).setTitle(title);
     }
     
     
