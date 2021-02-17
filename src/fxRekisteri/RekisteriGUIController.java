@@ -108,10 +108,20 @@ public class RekisteriGUIController {
     
         
     public boolean avaa() {
-        String nimi = RekisteriNimiController.kysyNimi(null, rekisterimi);
+        String nimi = RekisteriNimiController.kysyNimi(null, rekisterinimi);
         if (nimi == null) return false;
-        lueTiedosto(uusinimi);
+        lueTiedosto(nimi);
         return true;
     }
     
+    private void tallenna() {
+        Dialogs.showMessageDialog("Tallennus ei toimi vielä");
+    }
+    
+    
+    public boolean saakoSulkea() {
+        tallenna();
+        return true;
+    }
+
 }
