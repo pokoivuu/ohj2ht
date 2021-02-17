@@ -33,3 +33,4 @@ public class RekisteriMain extends Application {
 		launch(args);
 	}
 }
+
