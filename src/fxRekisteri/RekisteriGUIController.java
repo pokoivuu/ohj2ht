@@ -78,9 +78,20 @@ public class RekisteriGUIController implements Initializable {
     }
     
     
+    @FXML private void handleLisaaHuomio() {
+        Dialogs.showMessageDialog("Ei toimi vielä");
+    }
+    
+    
+    @FXML private void handlePoistaHuomio() {
+        Dialogs.showMessageDialog("Ei toimi vielä");
+    }
+    
+    
     @FXML private void handleMuokkaaHuomio() {
         Dialogs.showMessageDialog("Ei toimi vielä");
     }
+    
     
     @FXML private void handleUusiPaiva() {
         Dialogs.showMessageDialog("Ei toimi vielä");

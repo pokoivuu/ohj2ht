@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane fx:controller="fi.jyu.mit.fxgui.ModalController" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.jyu.mit.fxgui.ModalController">
    <center>
       <AnchorPane prefHeight="215.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -97,8 +97,8 @@
    <bottom>
       <ButtonBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0">
         <buttons>
-          <Button alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="OK" />
-            <Button cancelButton="true" minWidth="48.0" mnemonicParsing="false" prefHeight="25.0" text="Cancel" />
+          <Button alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#handleDefaultOK" text="OK" />
+            <Button cancelButton="true" minWidth="48.0" mnemonicParsing="false" onAction="#handleDefaultCancel" prefHeight="25.0" text="Cancel" />
         </buttons>
       </ButtonBar>
    </bottom>
