@@ -125,7 +125,6 @@
       </BorderPane>
    </right>
    <center>
-<<<<<<< HEAD
       <ScrollPane fitToWidth="true" prefHeight="191.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <content>
             <GridPane hgap="10.0" prefWidth="185.0">
@@ -155,7 +154,6 @@
             </GridPane>
          </content>
       </ScrollPane>
-=======
       <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <center>
             <ScrollPane fitToWidth="true" prefHeight="191.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -194,6 +192,5 @@
             <Label fx:id="labelVirhe" prefHeight="17.0" prefWidth="250.0" BorderPane.alignment="CENTER" />
          </bottom>
       </BorderPane>
->>>>>>> 35f8b28ece8ee583348d44d71c734254ee6f48af
    </center>
 </BorderPane>
