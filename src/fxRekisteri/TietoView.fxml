@@ -6,11 +6,11 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.jyu.mit.fxgui.ModalController">
    <bottom>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button layoutX="14.0" layoutY="161.0" mnemonicParsing="false" text="OK" />
+            <Button layoutX="14.0" layoutY="161.0" mnemonicParsing="false" onAction="#handleDefaultOK" text="OK" />
             <Label layoutX="61.0" layoutY="29.0" text="Version 1.0">
                <font>
                   <Font size="16.0" />
