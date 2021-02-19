@@ -39,6 +39,9 @@ public class RekisteriGUIController implements Initializable {
         //      
     }
     
+    
+    /// Eri menujen käsittelyt alempana
+    
     @FXML private void handleMenuTallenna() {
         tallenna();
     }
@@ -47,6 +50,7 @@ public class RekisteriGUIController implements Initializable {
     @FXML private void handleMenuAvaa() {
         avaa();
     }
+    
     
     @FXML private void handleMenuLopeta() {
         tallenna();
@@ -62,6 +66,7 @@ public class RekisteriGUIController implements Initializable {
     @FXML private void handleMenuMuokkaa() {
         ModalController.showModal(RekisteriGUIController.class.getResource("MuokkausView.fxml"), "Muokkaus", null, "");
     }
+    
     
     @FXML private void handleMenuPoista() {
         Dialogs.showMessageDialog("Ei toimi vielä");
@@ -109,6 +114,12 @@ public class RekisteriGUIController implements Initializable {
     }
     
     
+    /// Alemmat eivät liity suoraan käyttöliittymään
+    
+    
+    /*
+     * Virheenkäsittely
+     */
 
     private void virhe(String virhe) {
         if (virhe == null || virhe.isEmpty() ) {
