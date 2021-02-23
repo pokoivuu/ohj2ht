@@ -74,7 +74,8 @@ public class RekisteriGUIController implements Initializable {
     
     
     @FXML private void handleMenuApua() {
-        Dialogs.showMessageDialog("Ei toimi vielä");
+        //Dialogs.showMessageDialog("Ei toimi vielä");
+        avustus();
     }
     
     
@@ -113,6 +114,9 @@ public class RekisteriGUIController implements Initializable {
             virhe("Ei osata vielä hakea " + haku + ": " + hakuehto);
     }
     
+    @FXML private void handleAvaa() {
+        avaa();
+    }
     
     /// Alemmat eivät liity suoraan käyttöliittymään
     
@@ -177,9 +181,20 @@ public class RekisteriGUIController implements Initializable {
         return true;
     }
     
-
-    @FXML private void handleAvaa() {
-        avaa();
+    
+    /*
+     * Avaa ohjelman suunnitelmasivun (TIM)
+     */
+    private void avustus() {
+        Desktop desktop = Desktop.getDesktop();
+        try {
+            URI uri = new URI("https://tim.jyu.fi/view/kurssit/tie/ohj2/2021k/ht/teeilmku");
+            desktop.browse(uri);
+        } catch (URISyntaxException e) {
+            return;
+        } catch (IOException e) {
+            return;
+        }
     }
     
 
