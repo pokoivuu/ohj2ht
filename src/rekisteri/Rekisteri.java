@@ -1,4 +1,4 @@
-package Rekisteri;
+package rekisteri;
 
 public class Rekisteri {
 
