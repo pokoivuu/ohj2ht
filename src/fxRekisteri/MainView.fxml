@@ -19,7 +19,7 @@
               </buttons>
             </ButtonBar>
             <TextField fx:id="textVastaus" layoutX="35.0" layoutY="125.0" prefHeight="25.0" prefWidth="288.0" text="2020-2021" />
-            <Label layoutX="35.0" layoutY="100.0" text="Anna rekistseri" />
+            <Label layoutX="35.0" layoutY="100.0" text="Anna rekisteri" />
          </children>
       </AnchorPane>
    </bottom>

@@ -1,5 +1,5 @@
 /**
- * Sample Skeleton for 'RekisteriGUIView.fxml' Controller Class
+ * Rekisterin käyttöliittymälle kontrolleriluokka
  */
 
 package fxRekisteri;
@@ -33,11 +33,14 @@ public class RekisteriGUIController implements Initializable {
     
     private String rekisterinimi = "2020-2021";
     
- 
+    
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
         //      
     }
+    
+    
+    /// Eri menujen käsittelyt alempana
     
     @FXML private void handleMenuTallenna() {
         tallenna();
@@ -47,6 +50,7 @@ public class RekisteriGUIController implements Initializable {
     @FXML private void handleMenuAvaa() {
         avaa();
     }
+    
     
     @FXML private void handleMenuLopeta() {
         tallenna();
@@ -63,13 +67,15 @@ public class RekisteriGUIController implements Initializable {
         ModalController.showModal(RekisteriGUIController.class.getResource("MuokkausView.fxml"), "Muokkaus", null, "");
     }
     
+    
     @FXML private void handleMenuPoista() {
         Dialogs.showMessageDialog("Ei toimi vielä");
     }
     
     
     @FXML private void handleMenuApua() {
-        Dialogs.showMessageDialog("Ei toimi vielä");
+        //Dialogs.showMessageDialog("Ei toimi vielä");
+        avustus();
     }
     
     
@@ -108,7 +114,16 @@ public class RekisteriGUIController implements Initializable {
             virhe("Ei osata vielä hakea " + haku + ": " + hakuehto);
     }
     
+    @FXML private void handleAvaa() {
+        avaa();
+    }
     
+    /// Alemmat eivät liity suoraan käyttöliittymään
+    
+    
+    /*
+     * Virheenkäsittely
+     */
 
     private void virhe(String virhe) {
         if (virhe == null || virhe.isEmpty() ) {
@@ -126,6 +141,10 @@ public class RekisteriGUIController implements Initializable {
     }
     
     
+    /**
+     * Tiedoston nimen kysely ja lukeminen
+     * @return onnistuiko tiedoston avaus vai ei; true tai false
+     */
     public boolean avaa() {
         String nimi = RekisteriNimiController.kysyNimi(null, rekisterinimi);
         if (nimi == null) return false;
@@ -134,6 +153,10 @@ public class RekisteriGUIController implements Initializable {
     }
     
     
+    /**
+     * Luetaan rekisteri oikeannimisestä tiedostosta
+     * @param nimi Luettava nimi
+     */
     protected void lueTiedosto(String nimi) {
         rekisterinimi = nimi;
         setTitle("Rekisteri - " + rekisterinimi);
@@ -141,20 +164,37 @@ public class RekisteriGUIController implements Initializable {
             Dialogs.showMessageDialog(virhe);
     }
     
-    
+    /**
+     * Tallennusmetodi
+     */
     private void tallenna() {
         Dialogs.showMessageDialog("Tallennus ei toimi vielä");
     }
     
     
+    /**
+     * Tarkastetaan voidaanko sulkea eli onko tallennettu
+     * @return Tallennustila, true tai false 
+     */
     public boolean saakoSulkea() {
         tallenna();
         return true;
     }
     
-
-    @FXML private void handleAvaa() {
-        avaa();
+    
+    /*
+     * Avaa ohjelman suunnitelmasivun (TIM)
+     */
+    private void avustus() {
+        Desktop desktop = Desktop.getDesktop();
+        try {
+            URI uri = new URI("https://tim.jyu.fi/view/kurssit/tie/ohj2/2021k/ht/teeilmku");
+            desktop.browse(uri);
+        } catch (URISyntaxException e) {
+            return;
+        } catch (IOException e) {
+            return;
+        }
     }
     
 
