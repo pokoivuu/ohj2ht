@@ -2,6 +2,12 @@ package Rekisteri;
 
 import java.io.*;
 
+/**
+ * Päivä-luokka
+ * @author Teemu Kupiainen, Pauli Koivuniemi
+ * @version 25 Feb 2021
+ *
+ */
 public class Paiva {
 
     private int tunnusNro           = 0;
