@@ -6,22 +6,30 @@ package fxRekisteri;
 
 import java.awt.Desktop;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.List; 
 import java.util.ResourceBundle;
 
 import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalController;
+import fi.jyu.mit.fxgui.TextAreaOutputStream;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Font;
+import rekisteri.Huomio;
 import rekisteri.Paiva;
+import rekisteri.Rekisteri;
+import rekisteri.SailoException;
 
 
 /**
@@ -33,7 +41,7 @@ public class RekisteriGUIController implements Initializable {
     @FXML private TextField hakuField;
     @FXML private ComboBoxChooser<String> cbPaikka;
     @FXML private Label labelVirhe;
-    @FXML private BorderPane panelPaiva;
+    @FXML private ScrollPane panelPaiva;
     @FXML private ListChooser<Paiva> chooserPaiva; 
     
     private String rekisterinimi = "2020-2021";
@@ -64,7 +72,8 @@ public class RekisteriGUIController implements Initializable {
     
     
     @FXML private void handleMenuLisaa() {
-        Dialogs.showMessageDialog("Ei toimi vielä");
+        //Dialogs.showMessageDialog("Ei toimi vielä");
+        uusiPaiva();
     }
     
     
@@ -90,7 +99,8 @@ public class RekisteriGUIController implements Initializable {
     
     
     @FXML private void handleLisaaHuomio() {
-        Dialogs.showMessageDialog("Ei toimi vielä");
+        //Dialogs.showMessageDialog("Ei toimi vielä");
+        uusiHuomio();
     }
     
     
@@ -105,7 +115,7 @@ public class RekisteriGUIController implements Initializable {
     
     
     @FXML private void handleUusiPaiva() {
-        Dialogs.showMessageDialog("Ei toimi vielä");
+        //Dialogs.showMessageDialog("Ei toimi vielä");
         uusiPaiva();
     }
     
@@ -126,11 +136,29 @@ public class RekisteriGUIController implements Initializable {
     
     /// Alemmat eivät liity suoraan käyttöliittymään
     
+    private Rekisteri rekisteri;
+    private Paiva paivaKohta;
+    private TextArea areaPaiva = new TextArea();
     
+    
+    /**
+     * Tekee alustukset
+     */
+    protected void alusta() {
+        panelPaiva.setContent(areaPaiva);
+        areaPaiva.setFont(new Font("Times New Roman", 12));
+        panelPaiva.setFitToHeight(true);
+        
+        chooserPaiva.clear();
+        chooserPaiva.addSelectionListener(e -> naytaPaiva());
+        
+        
+    }
+    
+       
     /*
      * Virheenkäsittely
      */
-
     private void virhe(String virhe) {
         if (virhe == null || virhe.isEmpty() ) {
             labelVirhe.setText("");
@@ -187,6 +215,106 @@ public class RekisteriGUIController implements Initializable {
         return true;
     }
     
+    
+    /**
+     * Näyttää päivän tiedot
+     */
+    protected void naytaPaiva() {
+        paivaKohta = chooserPaiva.getSelectedObject();
+        
+        if (paivaKohta == null) return;
+        
+        areaPaiva.setText("");
+        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaPaiva)) {
+            tulosta(os,paivaKohta);  
+        }        
+    }
+    
+    
+    /**
+     * Hakee päivän tiedot listaan
+     * @param paivanro päivän numero
+     */
+    protected void hae(int paivanro) {
+        chooserPaiva.clear();
+        
+        int indeksi = 0;
+        for (int i = 0; i < rekisteri.getPaivia(); i++) {
+            Paiva paiva = rekisteri.annaPaiva(i);
+            if (paiva.getTunnusNro() == paivanro) indeksi = i;
+            chooserPaiva.add(paiva.getPaikka(), paiva);
+        }
+        chooserPaiva.setSelectedIndex(indeksi);
+    }
+    
+    
+    /**
+     * Luodaan uusi päivä
+     */
+    protected void uusiPaiva() {
+        Paiva uusiPaiva = new Paiva();
+        uusiPaiva.rekisteroi();
+        uusiPaiva.paivanTiedot();
+        try {
+            rekisteri.lisaa(uusiPaiva);
+        } catch (SailoException e) {
+            Dialogs.showMessageDialog("Ongelmia uuden päivän luomisessa" + e.getMessage());
+        }
+        hae(uusiPaiva.getTunnusNro());
+    }
+    
+    
+    /**
+     * 
+     */
+    public void uusiHuomio() {
+        if (paivaKohta == null) return;
+        Huomio huom = new Huomio();
+        huom.rekisterointi();
+        huom.testiHuomio(paivaKohta.getTunnusNro());
+        rekisteri.lisaa(huom);
+        hae(paivaKohta.getTunnusNro());
+        //TODO: kesken
+    }
+    
+    
+    /**
+     * @param rekisteri Käyttöliittymässä käytettävä rekisteri
+     */
+    public void setRekisteri(Rekisteri rekisteri) {
+        this.rekisteri = rekisteri;
+        naytaPaiva();
+    }
+    
+    
+    /**
+     * @param os Tietovirta (outputstream)
+     * @param paiva Tulostettava päivä
+     */
+    public void tulosta (PrintStream os, final Paiva paiva) {
+        os.println("----------------------------------------------");
+        paiva.tulosta(os);
+        os.println("----------------------------------------------");
+        List<Huomio> huomiot = rekisteri.annaHuomio(paiva);  
+        for (Huomio huom : huomiot)
+            huom.tulosta(os);  
+
+    }
+    
+    /**
+     * Tulostaa listan päivät tekstialueeseen
+     * @param text Tulostettava alue
+     */
+    public void tulostaHalutut(TextArea text) {
+        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(text)) {
+            os.println("Tulostetaan päivät");
+            for (int i = 0; i <rekisteri.getPaivia(); i++) {
+                Paiva paiva = rekisteri.annaPaiva(i);
+                tulosta(os,paiva);
+                os.println("\n\n");
+            }
+        }
+    }
     
     /*
      * Avaa ohjelman suunnitelmasivun (TIM)

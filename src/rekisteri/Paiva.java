@@ -19,6 +19,8 @@ public class Paiva {
     private double kosteus          = 0;
     private double tuulenNopeus     = 0;
     
+    private static int seuraava = 1;
+    
     /**
      * Metodi, jolla täytetään päivän tiedot
      */
@@ -33,6 +35,13 @@ public class Paiva {
     }
     
     
+    /**
+     * Getteri
+     * @return paikka
+     */
+    public String getPaikka() {
+        return paikka;
+    }
     
     
     /**
@@ -55,6 +64,18 @@ public class Paiva {
         tulosta(new PrintStream(os));
     }
 
+    
+    /**
+     * Antaa päivälle seuraavan (vapaan) rekisterinumeron
+     * @return Päivän uusi tunnunsnumero
+     */
+    public int rekisteroi() {
+        tunnusNro = seuraava;
+        seuraava++;
+        return tunnusNro;
+    }
+    
+    
     /**
      * Palauttaa päivän tunnusnumeron
      * @return päivän tunnusnumero

@@ -2,6 +2,12 @@ package rekisteri;
 
 import java.util.List;
 
+/**
+ * Rekisteriluokka
+ * @author Teemu Kupiainen, Pauli Koivuniemi
+ * @version 11 Mar 2021
+ *
+ */
 public class Rekisteri {
     private final Huomiot huomiot = new Huomiot();
     private final Paivat paivat = new Paivat();
