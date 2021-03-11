@@ -19,6 +19,11 @@ public class Paivat {
         //Tyhjä konstruktori
     }
     
+    public Paiva anna(int i) throws IndexOutOfBoundsException {
+        if (i < 0 || lkm <= i)
+            throw new IndexOutOfBoundsException("Laiton indeksi: " + i);
+        return alkiot[i];
+    }
     
     /**
      * Uuden päivän lisääminen tietorakenteeseen.
@@ -29,6 +34,10 @@ public class Paivat {
         if (lkm >= alkiot.length) throw new SailoException("Taulukko täynnä");
         alkiot[lkm] = paiva;
         lkm++;
+    }
+    
+    public void talleta() throws SailoException {
+        throw new SailoException("Ei osata vielä tallettaa tiedostoa " + paivatTiedosto);
     }
     
     

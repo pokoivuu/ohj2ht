@@ -32,6 +32,9 @@ public class Paiva {
        tuulenNopeus = 2;
     }
     
+    
+    
+    
     /**
      * Tulostetaan päivän tiedot
      * @param out tietovirta johon tulostetaan
