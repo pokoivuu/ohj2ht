@@ -1,9 +1,9 @@
 package rekisteri;
 
-<<<<<<< HEAD
-public class Huomiot {
+
+
     
-=======
+
 import java.util.*;
 
 /**
@@ -74,6 +74,9 @@ public class Huomiot implements Iterable<Huomio> {
         return taulukko.iterator();
     }
     
+    public void talleta() throws SailoException {
+        throw new SailoException("Ei osata vielä tallettaa tiedostoa " + huomiotTiedosto);
+    }
     
     /**
      * 
@@ -96,5 +99,5 @@ public class Huomiot implements Iterable<Huomio> {
     public static void main(String[] args) {
         //Tähän tulee testiohjelma
     }
->>>>>>> a74d3f03cd3e36b2f353433aa8f7defba282b7c8
+
 }

@@ -89,7 +89,7 @@
             </BorderPane>
          </top>
          <left>
-            <ListChooser prefHeight="274.0" prefWidth="200.0" rivit="1.1.2021&#10;2.1.2021&#10;3.1.2021&#10;4.1.2021&#10;" BorderPane.alignment="CENTER" />
+            <ListChooser fx:id="chooserPaiva" prefHeight="274.0" prefWidth="200.0" rivit="1.1.2021&#10;2.1.2021&#10;3.1.2021&#10;4.1.2021&#10;" BorderPane.alignment="CENTER" />
          </left>
       </BorderPane>
    </left>
@@ -132,7 +132,7 @@
             <Label fx:id="labelVirhe" prefHeight="17.0" prefWidth="250.0" BorderPane.alignment="CENTER" />
          </bottom>
          <center>
-            <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <BorderPane fx:id="panelPaiva" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <center>
                   <GridPane hgap="10.0" prefWidth="185.0" BorderPane.alignment="CENTER">
                     <columnConstraints>

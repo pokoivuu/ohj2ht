@@ -13,12 +13,15 @@ import java.util.ResourceBundle;
 
 import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
+import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import rekisteri.Paiva;
 
 
 /**
@@ -30,13 +33,15 @@ public class RekisteriGUIController implements Initializable {
     @FXML private TextField hakuField;
     @FXML private ComboBoxChooser<String> cbPaikka;
     @FXML private Label labelVirhe;
+    @FXML private BorderPane panelPaiva;
+    @FXML private ListChooser<Paiva> chooserPaiva; 
     
     private String rekisterinimi = "2020-2021";
     
     
     @Override
     public void initialize(URL url, ResourceBundle bundle) {
-        //      
+        alusta();
     }
     
     
@@ -101,6 +106,7 @@ public class RekisteriGUIController implements Initializable {
     
     @FXML private void handleUusiPaiva() {
         Dialogs.showMessageDialog("Ei toimi vielä");
+        uusiPaiva();
     }
     
     
