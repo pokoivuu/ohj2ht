@@ -62,4 +62,12 @@ public class Huomio {
     public int getHuomioId() {
         return huomiotunnus;
     }
+    
+    /**
+     * testiohjelma Huomioille
+     * @param args ei käytössä
+     */
+    public static void main(String[] args)  {
+        //
+    }
 }
