@@ -39,10 +39,9 @@ public class Huomio {
      * @return Päivän uusi identifikaationumero
      */
     public int rekisterointi() {
-        paivatunnus = seuraava;
+        huomiotunnus = seuraava;
         seuraava++;
-        return paivatunnus;
-        
+        return huomiotunnus;       
     }
 
 
