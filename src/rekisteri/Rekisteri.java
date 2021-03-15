@@ -71,8 +71,8 @@ public class Rekisteri {
      * @throws SailoException jos tallentaminen ei onnistu
      */
     public void talleta() throws SailoException {
-        paivat.talleta();
-        huomiot.talleta();        
+        paivat.tallennus();
+        huomiot.tallennus();        
     }
 
     /**

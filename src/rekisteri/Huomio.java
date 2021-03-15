@@ -27,10 +27,10 @@ public class Huomio {
     
     /**
      * Alustetaan tietty huomio uniikilla identifikaattorilla
-     * @param id Uniikki identifikaattori
+     * @param paivatunnus Uniikki identifikaattori
      */
-    public Huomio(int id) {
-        this.huomiotunnus = id;
+    public Huomio(int paivatunnus) {
+        this.paivatunnus = paivatunnus;
     }
     
     
@@ -63,6 +63,22 @@ public class Huomio {
         return huomiotunnus;
     }
     
+    
+    /**
+     * Täytetään testiarvot
+     * @param nro viite
+     */
+    public void testiHuomio(int nro) {
+        paivatunnus = nro;
+        merkinta = "Sataa tavallista enemmän";
+        pvm = "2.1.2021";
+    }
+    
+    public void tulosta(PrintStream out) {
+        // TODO Auto-generated method stub
+        
+    }
+    
     /**
      * testiohjelma Huomioille
      * @param args ei käytössä
@@ -70,4 +86,7 @@ public class Huomio {
     public static void main(String[] args)  {
         //
     }
+
+
+
 }

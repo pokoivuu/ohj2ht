@@ -36,10 +36,6 @@ public class Paivat {
         lkm++;
     }
     
-    public void talleta() throws SailoException {
-        throw new SailoException("Ei osata vielä tallettaa tiedostoa " + paivatTiedosto);
-    }
-    
     
     /**
      * Viite paivaan indeksissä i, alkiot[i]-taulukossa
