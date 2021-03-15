@@ -147,7 +147,7 @@
                <top>
                   <ScrollPane fx:id="panelPaiva" pannable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <content>
-                        <GridPane fx:id="panelPaiva" hgap="10.0" prefWidth="185.0">
+                        <GridPane  hgap="10.0" prefWidth="185.0">
                           <columnConstraints>
                             <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
                             <ColumnConstraints hgrow="ALWAYS" maxWidth="72.0" minWidth="68.0" prefWidth="68.0" />

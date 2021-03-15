@@ -150,17 +150,24 @@ public class Huomiot implements Iterable<Huomio> {
     public static void main(String[] args) {
         Huomiot huomioita = new Huomiot();
         Huomio sataa1 = new Huomio();
-        sataa1.testiHuomio(1);
+        sataa1.testiHuomio(2);
         Huomio sataa2 = new Huomio();
-        sataa2.testiHuomio(2);
+        sataa2.testiHuomio(1);
         Huomio sataa3 = new Huomio();
-        sataa3.testiHuomio(1);
+        sataa3.testiHuomio(2);
+        
         
         
         huomioita.lisaa(sataa1);
         huomioita.lisaa(sataa2);
         huomioita.lisaa(sataa3);
         huomioita.lisaa(sataa2);
+        
+        List<Huomio> huomiot2 = huomioita.annaHuomio(1);
+        for (Huomio h : huomiot2) {
+            System.out.print(h.getPaivaId() + " ");
+            h.tulostus(System.out);
+        }
     }
 
 }

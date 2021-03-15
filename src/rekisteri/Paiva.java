@@ -49,6 +49,7 @@ public class Paiva {
      * @param out tietovirta johon tulostetaan
      */
     public void tulosta(PrintStream out) {
+        out.println(tunnusNro);
         out.println(paikka + " | " + paivaMaara + " | " + aika);
         out.println("Lämpötila: " + lampoTila + "C");
         out.println("Sademäärä: " + sadeMaara + "mm");

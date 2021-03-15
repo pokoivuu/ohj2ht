@@ -12,7 +12,7 @@ public class Huomio {
     private int paivatunnus;
     private int huomiotunnus;
     private String merkinta;
-    private String pvm;
+    private String klo;
     
     private static int seuraava = 1;
     
@@ -71,11 +71,25 @@ public class Huomio {
     public void testiHuomio(int nro) {
         paivatunnus = nro;
         merkinta = "Sataa tavallista enemmän";
-        pvm = "2.1.2021";
+        klo = "11:00";
     }
     
-    public void tulosta(PrintStream out) {
-        // TODO Auto-generated method stub
+    
+    /**
+     * Huomion tiedot
+     * @param out tietovirta (out)
+     */
+    public void tulostus(PrintStream out) {
+        out.println(huomiotunnus+ " " + merkinta + " " + klo);
+        
+    }
+    
+    /**
+     * Tulostus 
+     * @param os tietovirta (outputstream)
+     */
+    public void tulostus(OutputStream os) {
+        tulostus(new PrintStream(os));
         
     }
     
