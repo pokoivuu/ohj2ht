@@ -62,7 +62,7 @@ public class Paivat {
      * </pre>
      */
     public void lisaa (Paiva paiva) throws SailoException {
-        if (lkm >= alkiot.length) throw new SailoException("Taulukko täynnä");
+        if (lkm >= alkiot.length) throw new SailoException("Tietorakenne täynnä");
         alkiot[lkm] = paiva;
         lkm++;
     }

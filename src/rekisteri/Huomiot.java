@@ -67,12 +67,12 @@ public class Huomiot implements Iterable<Huomio> {
     
     
     /**
-     * Iteraattori kaikkien taulukon huomioiden läpikäymiseen
+     * Iteraattori kaikkien huomioiden läpikäymiseen
      * @example
      * <pre name="test">
      *  #PACKAGEIMPORT
      *  #import java.util.*;
-     *  
+     *  //Luodaan Huomiot ja lisätään huomioita
      *  Huomiot huomioita = new Huomiot();
      *  Huomio sataa1 = new Huomio(1); huomioita.lisaa(sataa1);
      *  Huomio sataa2 = new Huomio(2); huomioita.lisaa(sataa2);
@@ -80,6 +80,7 @@ public class Huomiot implements Iterable<Huomio> {
      *  Huomio sataa21 = new Huomio(2); huomioita.lisaa(sataa21);
      *  Huomio sataa13 = new Huomio(1); huomioita.lisaa(sataa13);
      *  
+     *  //Iteraattorilla käydään läpi
      *  Iterator<Huomio> ite = huomioita.iterator();
      *  ite.next() === sataa1;
      *  ite.next() === sataa2;
@@ -106,7 +107,7 @@ public class Huomiot implements Iterable<Huomio> {
     
     
     /**
-     * 
+     * Haetaan kaikki huomiot
      * @param tunnus uniikki identifikaattori
      * @return Tietorakenne, jossa viitteet löydettyihin huomioihin
      * @example

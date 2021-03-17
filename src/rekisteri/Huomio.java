@@ -26,7 +26,7 @@ public class Huomio {
     
     
     /**
-     * Alustetaan tietty huomio uniikilla identifikaattorilla
+     * Alustetaan tietty huomio päivän uniikilla identifikaattorilla
      * @param paivatunnus Uniikki identifikaattori
      */
     public Huomio(int paivatunnus) {
@@ -37,6 +37,18 @@ public class Huomio {
     /**
      * Annetaan seuraava vapaa rekisterinumero
      * @return Päivän uusi identifikaationumero
+     * @example
+     * <pre name="test">
+     *  Huomio sataa1 = new Huomio();
+     *  sataa1.getHuomioId() === 0;
+     *  sataa1.rekisterointi();
+     *  Huomio sataa2 = new Huomio();
+     *  sataa2.rekisterointi();
+     *  sataa1.getHuomioId() === 1;
+     *  int n1 = sataa1.getHuomioId();
+     *  int n2 = sataa2.getHuomioId();
+     *  n1 === n2-1;
+     * </pre>
      */
     public int rekisterointi() {
         huomiotunnus = seuraava;
@@ -97,7 +109,9 @@ public class Huomio {
      * @param args ei käytössä
      */
     public static void main(String[] args)  {
-        //
+        Huomio huom = new Huomio();
+        huom.testiHuomio(2);
+        huom.tulostus(System.out);
     }
 
 
