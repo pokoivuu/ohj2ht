@@ -3,7 +3,7 @@ package rekisteri;
 import java.io.*;
 
 /**
- * Huomio-luokka
+ * Huomio-luokka, rekisteröidään huomioita uniikilla identifikaattorilla
  * @author Teemu Kupiainen, Pauli Koivuniemi
  * @version 11 Mar 2021
  *

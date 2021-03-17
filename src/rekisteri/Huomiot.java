@@ -8,6 +8,8 @@ import java.util.*;
 
 /**
  * Huomiot-luokka, jossa lisätään esim. uusi huomio
+ * Luetaan tiedosto, johon tallennetaan
+ * Käyttää iterable-rajapintaa
  * @author Teemu Kupiainen, Pauli Koivuniemi
  * @version 11 Mar 2021
  *
