@@ -2,6 +2,7 @@ package fxRekisteri;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import rekisteri.Rekisteri;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -21,14 +22,22 @@ public class RekisteriMain extends Application {
         try {
             FXMLLoader ldr = new FXMLLoader(getClass().getResource("RekisteriGUIView.fxml"));
             final Pane root = ldr.load();
-            final RekisteriGUIController kerhoCtrl = (RekisteriGUIController)ldr.getController();
+            final RekisteriGUIController rekisteriCtrl = (RekisteriGUIController)ldr.getController();
             
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource("rekisteri.css").toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.setTitle("saarekisteri");
+            
+            primaryStage.setOnCloseRequest((event) ->{
+                if (!rekisteriCtrl.saakoSulkea() ) event.consume();
+              });
+            
+            Rekisteri rekisteri = new Rekisteri();
+            rekisteriCtrl.setRekisteri(rekisteri);
+            
             primaryStage.show();
-            if ( !kerhoCtrl.avaa() ) Platform.exit();
+            if ( !rekisteriCtrl.avaa() ) Platform.exit();
         } catch(Exception e) {
             e.printStackTrace();
         }

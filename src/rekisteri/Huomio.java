@@ -12,7 +12,7 @@ public class Huomio {
     private int tunnusNro;
     private int huomiotunnus;
     private String merkinta;
-    private String pvm;
+    private String klo;
     
     private static int seuraava = 1;
     
@@ -34,11 +34,11 @@ public class Huomio {
     }
     
     /**
-     * Alustetaan tietty huomio uniikilla identifikaattorilla
-     * @param id Uniikki identifikaattori
+     * Alustetaan tietty huomio päivän uniikilla identifikaattorilla
+     * @param paivatunnus Uniikki identifikaattori
      */
-    public Huomio(int id) {
-        this.huomiotunnus = id;
+    public Huomio(int paivatunnus) {
+        this.paivatunnus = paivatunnus;
     }
     
     
@@ -47,6 +47,7 @@ public class Huomio {
      * @return Päivän uusi identifikaationumero
      * @example
      * <pre name="test">
+<<<<<<< HEAD
      *   Huomio huom1 = new Huomio();
      *   huom1.getHuomioId() === 0;
      *   huom1.rekisterointi();
@@ -55,13 +56,28 @@ public class Huomio {
      *   int n1 = huom1.getHuomioId();
      *   int n2 = huom2.getHuomioId();
      *   n1 === n2-1;
+=======
+     *  Huomio sataa1 = new Huomio();
+     *  sataa1.getHuomioId() === 0;
+     *  sataa1.rekisterointi();
+     *  Huomio sataa2 = new Huomio();
+     *  sataa2.rekisterointi();
+     *  sataa1.getHuomioId() === 1;
+     *  int n1 = sataa1.getHuomioId();
+     *  int n2 = sataa2.getHuomioId();
+     *  n1 === n2-1;
+>>>>>>> ffe04a3fe75ac04eea6189ac36e85be011a80ad8
      * </pre>
      */
     public int rekisterointi() {
         huomiotunnus = seuraava;
         seuraava++;
+<<<<<<< HEAD
         return huomiotunnus;
         
+=======
+        return huomiotunnus;       
+>>>>>>> ffe04a3fe75ac04eea6189ac36e85be011a80ad8
     }
 
 
@@ -99,13 +115,51 @@ public class Huomio {
         return huomiotunnus;
     }
     
+    
+    /**
+     * Täytetään testiarvot
+     * @param nro viite
+     */
+    public void testiHuomio(int nro) {
+        paivatunnus = nro;
+        merkinta = "Sataa tavallista enemmän";
+        klo = "11:00";
+    }
+    
+    
+    /**
+     * Huomion tiedot
+     * @param out tietovirta (out)
+     */
+    public void tulostus(PrintStream out) {
+        out.println(huomiotunnus+ " " + merkinta + " " + klo);
+        
+    }
+    
+    /**
+     * Tulostus 
+     * @param os tietovirta (outputstream)
+     */
+    public void tulostus(OutputStream os) {
+        tulostus(new PrintStream(os));
+        
+    }
+    
     /**
      * testiohjelma Huomioille
      * @param args ei käytössä
      */
     public static void main(String[] args)  {
         Huomio huom = new Huomio();
+<<<<<<< HEAD
         huom.vastaaHuomio(2);
         huom.tulosta(System.out);
+=======
+        huom.testiHuomio(2);
+        huom.tulostus(System.out);
+>>>>>>> ffe04a3fe75ac04eea6189ac36e85be011a80ad8
     }
+
+
+
 }

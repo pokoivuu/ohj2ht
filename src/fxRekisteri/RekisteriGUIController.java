@@ -297,7 +297,7 @@ public class RekisteriGUIController implements Initializable {
         os.println("----------------------------------------------");
         List<Huomio> huomiot = rekisteri.annaHuomio(paiva);  
         for (Huomio huom : huomiot)
-            huom.tulosta(os);  
+            huom.tulostus(os);
 
     }
     

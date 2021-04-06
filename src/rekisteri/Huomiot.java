@@ -43,7 +43,7 @@ public class Huomiot implements Iterable<Huomio> {
      * 
      */
     public void lueTiedosto(String hakemisto) throws SailoException {
-        huomiotTiedosto = hakemisto + ".h";
+        huomiotTiedosto = hakemisto + ".huom";
         throw new SailoException("Ei osaa vielä lukea" + huomiotTiedosto);
     }
     
@@ -52,7 +52,7 @@ public class Huomiot implements Iterable<Huomio> {
      * Tallentaa tiedostoon
      * @throws SailoException Jos epäonnistuu tallennuksessa
      */
-    public void tallenna() throws SailoException {
+    public void tallennus() throws SailoException {
         throw new SailoException("Ei osaa vielä tallentaa" + huomiotTiedosto);
     }
     
@@ -67,26 +67,78 @@ public class Huomiot implements Iterable<Huomio> {
     
     
     /**
-     * Iteraattori kaikkien taulukon huomioiden läpikäymiseen
+     * Iteraattori kaikkien huomioiden läpikäymiseen
+     * @example
+     * <pre name="test">
+     *  #PACKAGEIMPORT
+     *  #import java.util.*;
+     *  //Luodaan Huomiot ja lisätään huomioita
+     *  Huomiot huomioita = new Huomiot();
+     *  Huomio sataa1 = new Huomio(1); huomioita.lisaa(sataa1);
+     *  Huomio sataa2 = new Huomio(2); huomioita.lisaa(sataa2);
+     *  Huomio sataa12 = new Huomio(1); huomioita.lisaa(sataa12);
+     *  Huomio sataa21 = new Huomio(2); huomioita.lisaa(sataa21);
+     *  Huomio sataa13 = new Huomio(1); huomioita.lisaa(sataa13);
+     *  
+     *  //Iteraattorilla käydään läpi
+     *  Iterator<Huomio> ite = huomioita.iterator();
+     *  ite.next() === sataa1;
+     *  ite.next() === sataa2;
+     *  ite.next() === sataa12;
+     *  ite.next() === sataa21;
+     *  ite.next() === sataa13;
+     *  ite.next() === sataa1; #THROWS NoSuchElementException
+     *  
+     *  int n = 0;
+     *  int htunnus[] = {1,2,1,2,1};
+     *  
+     *  for (Huomio h : huomioita) {
+     *      h.getPaivaId() === htunnus[n]; n++;
+     *  }
+     *
+     *  n === 5;
+     * </pre>
      */
+    
     @Override
     public Iterator<Huomio> iterator() {
         return taulukko.iterator();
     }
     
-    public void talleta() throws SailoException {
-        throw new SailoException("Ei osata vielä tallettaa tiedostoa " + huomiotTiedosto);
-    }
     
     /**
-     * 
-     * @param huomiotunnus huomion uniikki identifikaattori
+     * Haetaan kaikki huomiot
+     * @param tunnus uniikki identifikaattori
      * @return Tietorakenne, jossa viitteet löydettyihin huomioihin
+     * @example
+     * <pre name="test">
+     *  #import java.util.*;
+     *  
+     *  Huomiot huomioita = new Huomiot();
+     *  Huomio sataa1 = new Huomio(1); huomioita.lisaa(sataa1);
+     *  Huomio sataa2 = new Huomio(2); huomioita.lisaa(sataa2);
+     *  Huomio sataa12 = new Huomio(1); huomioita.lisaa(sataa12);
+     *  Huomio sataa21 = new Huomio(2); huomioita.lisaa(sataa21);
+     *  Huomio sataa13 = new Huomio(1); huomioita.lisaa(sataa13);
+     *  Huomio sataa41 = new Huomio(4); huomioita.lisaa(sataa41);
+     *  
+     *  List <Huomio> test;
+     *  test = huomioita.annaHuomio(10);
+     *  test.size() === 0;
+     *  test = huomioita.annaHuomio(1);
+     *  test.size() === 3;
+     *  test.get(0) == sataa1 === true;
+     *  test.get(1) == sataa12 === true;
+     *  test = huomioita.annaHuomio(4);
+     *  test.size() === 1;
+     *  test.get(0) == sataa41 === true;
+     *  
+     * </pre>
      */
-    public List<Huomio> annaHuomio(int huomiotunnus) {
+    public List<Huomio> annaHuomio(int tunnus) {
         List<Huomio> loytyy = new ArrayList<Huomio>();
         for (Huomio h : taulukko) {
-            if (h.getPaivaId() == huomiotunnus) loytyy.add(h);
+            if (h.getPaivaId() == tunnus) loytyy.add(h);
         }
         return loytyy;
     }
@@ -97,7 +149,26 @@ public class Huomiot implements Iterable<Huomio> {
      * @param args ei käytössä
      */
     public static void main(String[] args) {
-        //Tähän tulee testiohjelma
+        Huomiot huomioita = new Huomiot();
+        Huomio sataa1 = new Huomio();
+        sataa1.testiHuomio(2);
+        Huomio sataa2 = new Huomio();
+        sataa2.testiHuomio(1);
+        Huomio sataa3 = new Huomio();
+        sataa3.testiHuomio(2);
+        
+        
+        
+        huomioita.lisaa(sataa1);
+        huomioita.lisaa(sataa2);
+        huomioita.lisaa(sataa3);
+        huomioita.lisaa(sataa2);
+        
+        List<Huomio> huomiot2 = huomioita.annaHuomio(1);
+        for (Huomio h : huomiot2) {
+            System.out.print(h.getPaivaId() + " ");
+            h.tulostus(System.out);
+        }
     }
 
 }

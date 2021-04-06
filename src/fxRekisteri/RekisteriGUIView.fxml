@@ -97,7 +97,7 @@
    <right>
       <BorderPane BorderPane.alignment="CENTER">
          <right>
-            <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <BorderPane BorderPane.alignment="CENTER">
                <top>
                   <Label text="Huomioita" BorderPane.alignment="CENTER" />
                </top>
@@ -133,7 +133,7 @@
             <Label fx:id="labelVirhe" prefHeight="17.0" prefWidth="250.0" BorderPane.alignment="CENTER" />
          </bottom>
          <center>
-            <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <BorderPane prefWidth="200.0" BorderPane.alignment="CENTER">
                <bottom>
                   <BarChart prefHeight="193.0" prefWidth="249.0" BorderPane.alignment="CENTER">
                     <xAxis>
@@ -145,9 +145,9 @@
                   </BarChart>
                </bottom>
                <top>
-                  <ScrollPane fx:id="panelPaiva" pannable="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                  <ScrollPane fx:id="panelPaiva" fitToWidth="true" pannable="true" BorderPane.alignment="CENTER">
                      <content>
-                        <GridPane fx:id="panelPaiva" hgap="10.0" prefWidth="185.0">
+                        <GridPane hgap="10.0">
                           <columnConstraints>
                             <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
                             <ColumnConstraints hgrow="ALWAYS" maxWidth="72.0" minWidth="68.0" prefWidth="68.0" />

@@ -35,6 +35,12 @@ public class Paivat implements Iterable<Paiva> {
         //Tyhjä konstruktori
     }
     
+    /**
+     * Palautetaan viite päivään kohdassa i
+     * @param i monesko päivään viite
+     * @return viite päivään
+     * @throws IndexOutOfBoundsException jos i menee alueen ulkopuolelle
+     */
     public Paiva anna(int i) throws IndexOutOfBoundsException {
         if (i < 0 || lkm <= i)
             throw new IndexOutOfBoundsException("Laiton indeksi: " + i);
@@ -45,13 +51,39 @@ public class Paivat implements Iterable<Paiva> {
      * Uuden päivän lisääminen tietorakenteeseen.
      * @param paiva Päivän viite.
      * @throws SailoException tietorakenteen ollessa täynnä
+     * @example
+     * <pre name="test">
+     *  #THROWS SailoException
+     *  Paivat paivat = new Paivat();
+     *  Paiva maanantai = new Paiva(), tiistai = new Paiva();
+     *  paivat.getLkm() === 0;
+     *  paivat.lisaa(maanantai); paivat.getLkm() === 1;
+     *  paivat.lisaa(tiistai); paivat.getLkm() === 2;
+     *  paivat.lisaa(maanantai); paivat.getLkm() === 3;
+     *  
+     *  paivat.anna(0) === maanantai;
+     *  paivat.anna(1) === tiistai;
+     *  paivat.anna(2) === maanantai;
+     *  paivat.anna(1) == maanantai === false;
+     *  paivat.anna(2) == tiistai === false;
+     *  paivat.anna(3) === maanantai; #THROWS IndexOutOfBoundsException
+     *  paivat.lisaa(maanantai); paivat.getLkm() === 4;
+     *  paivat.lisaa(maanantai); paivat.getLkm() === 5;
+     *  paivat.lisaa(maanantai); paivat.getLkm() === 6;
+     *  paivat.lisaa(maanantai); paivat.getLkm() === 7;
+     *  paivat.lisaa(maanantai); paivat.getLkm() === 8;
+     *  paivat.lisaa(maanantai); paivat.getLkm() === 9;
+     *  paivat.lisaa(maanantai); paivat.getLkm() === 10;
+     *  paivat.lisaa(tiistai); #THROWS SailoException
+     * </pre>
      */
     public void lisaa (Paiva paiva) throws SailoException {
-        if (lkm >= alkiot.length) throw new SailoException("Taulukko täynnä");
+        if (lkm >= alkiot.length) throw new SailoException("Tietorakenne täynnä");
         alkiot[lkm] = paiva;
         lkm++;
     }
     
+<<<<<<< HEAD
     public void lueTiedostosta(String tied) throws SailoException {
         setTiedostonPerusNimi(tied);
         try ( BufferedReader fi = new BufferedReader(new FileReader(getTiedostonNimi())) ) {
@@ -146,6 +178,8 @@ public class Paivat implements Iterable<Paiva> {
         public String getKokoNimi() {
             return kokoNimi;
         }
+=======
+>>>>>>> ffe04a3fe75ac04eea6189ac36e85be011a80ad8
     
     /**
      * Viite paivaan indeksissä i, alkiot[i]-taulukossa
@@ -242,6 +276,25 @@ public class Paivat implements Iterable<Paiva> {
      * @param args ei käytössä
      */
     public static void main (String args[]) {
-        // ei vielä toteutusta
+        Paivat paivat = new Paivat();
+        
+        Paiva maanantai = new Paiva(), tiistai = new Paiva();
+        maanantai.rekisteroi();
+        maanantai.paivanTiedot();
+        tiistai.rekisteroi();
+        tiistai.paivanTiedot();
+        
+        try {
+            paivat.lisaa(maanantai);
+            paivat.lisaa(tiistai);
+            
+            for (int i = 0; i < paivat.getLkm(); i++) {
+                Paiva paiva = paivat.anna(i);
+                System.out.println("Päivä nro: " + i);
+                paiva.tulosta(System.out);
+            }
+        } catch (SailoException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 }
