@@ -21,7 +21,7 @@ public class RekisteriMain extends Application {
     public void start(Stage primaryStage) {
         try {
             FXMLLoader ldr = new FXMLLoader(getClass().getResource("RekisteriGUIView.fxml"));
-            final Pane root = ldr.load();
+            final Pane root = (Pane)ldr.load();
             final RekisteriGUIController rekisteriCtrl = (RekisteriGUIController)ldr.getController();
             
             Scene scene = new Scene(root);
@@ -37,7 +37,12 @@ public class RekisteriMain extends Application {
             rekisteriCtrl.setRekisteri(rekisteri);
             
             primaryStage.show();
+            Application.Parameters params = getParameters();
+            if (params.getRaw().size() > 0);
+                rekisteriCtrl.lueTiedosto(params.getRaw().get(0));               
             if ( !rekisteriCtrl.avaa() ) Platform.exit();
+
+
         } catch(Exception e) {
             e.printStackTrace();
         }

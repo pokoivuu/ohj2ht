@@ -1,5 +1,7 @@
 package rekisteri;
 
+import java.io.File;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -9,8 +11,8 @@ import java.util.List;
  *
  */
 public class Rekisteri {
-    private final Huomiot huomiot = new Huomiot();
-    private final Paivat paivat = new Paivat();
+    private Huomiot huomiot = new Huomiot();
+    private Paivat paivat = new Paivat();
     
     /**
      * Palauttaa päivien määrän
@@ -26,24 +28,7 @@ public class Rekisteri {
      * @throws SailoException Jos lisäys ei onnistu
      * @example
      * <pre name="test">
-<<<<<<< HEAD
      * #THROWS SailoException
-     * Rekisteri rekisteri = new Rekisteri();
-     * Paiva paiva1 = new Paiva(), paiva2 = new Paiva();
-     * paiva1.rekisteroi(); paiva2.rekisteroi();
-     * rekisteri.getPaivia() === 0;
-     * rekisteri.lisaa(paiva1); rekisteri.getPaivia() === 1;
-     * rekisteri.lisaa(paiva2); rekisteri.getPaivia() === 2;
-     * rekisteri.lisaa(paiva1); rekisteri.getPaivia() === 3;
-     * rekisteri.getPaivia() === 3;
-     * rekisteri.annaPaiva(0) === paiva1;
-     * rekisteri.annaPaiva(1) === paiva2;
-     * rekisteri.annaPaiva(2) === paiva1;
-     * rekisteri.annaPaiva(3) === paiva1; #THROWS IndexOutOfBoundsException 
-     * rekisteri.lisaa(paiva1); rekisteri.getPaivia() === 4;
-     * rekisteri.lisaa(paiva1); rekisteri.getPaivia() === 5;
-=======
-     *  #THROWS SailoException
      *  Rekisteri rekisteri = new Rekisteri();
      *  Paiva maanantai = new Paiva(), tiistai = new Paiva();
      *  maanantai.rekisteroi(); tiistai.rekisteroi();
@@ -65,7 +50,6 @@ public class Rekisteri {
      *  rekisteri.lisaa(maanantai); //10
      *  rekisteri.getPaivia() === 10;
      *  rekisteri.lisaa(tiistai); #THROWS SailoException
->>>>>>> ffe04a3fe75ac04eea6189ac36e85be011a80ad8
      * </pre>
      */
     public void lisaa(Paiva paiva) throws SailoException {
@@ -75,8 +59,9 @@ public class Rekisteri {
     /**
      * Lisää rekisteriin uuden huomion
      * @param h lisättävä huomio
+     * @throws SailoException jos ongelma
      */
-    public void lisaa(Huomio h) {
+    public void lisaa(Huomio h) throws SailoException {
         huomiot.lisaa(h);
     }
     
@@ -89,14 +74,12 @@ public class Rekisteri {
     public Paiva annaPaiva(int i) throws IndexOutOfBoundsException {
         return paivat.anna(i);
     }
-    
-<<<<<<< HEAD
 
-=======
     /**
      * Haetaan kaikki huomiot
      * @param paiva päivä jolta huomioita haetaan
      * @return palauttaa tietorakenne jossa viitteet löydettyihin päiviin
+     * @throws SailoException jos tulee ongelma
      * @example
      * <pre name="test">
      *  #import java.util.*;
@@ -124,10 +107,23 @@ public class Rekisteri {
      *  test.get(0) == sataa2 === true;
      * </pre>
      */
->>>>>>> ffe04a3fe75ac04eea6189ac36e85be011a80ad8
-    public List<Huomio> annaHuomio(Paiva paiva)  {
+
+    public List<Huomio> annaHuomio(Paiva paiva) throws SailoException {
         return huomiot.annaHuomio(paiva.getTunnusNro());   
 
+    }
+    
+    /**
+     * Asettaa tiedostojen nimet
+     * @param nimi uusi nimi
+     */
+    public void setTiedosto(String nimi) {
+        File dir = new File(nimi);
+        dir.mkdirs();
+        String hakemistonNimi="";
+        if (!nimi.isEmpty()) hakemistonNimi = nimi +"/";
+        paivat.setTiedostonPerusNimi(hakemistonNimi + "paivat");
+        huomiot.setTiedostonPerusNimi(hakemistonNimi + "huomiot");
     }
     
     /**
@@ -136,19 +132,45 @@ public class Rekisteri {
      * @throws SailoException mikäli luku epäonnistuu
      */
     public void lueTiedosto(String tiedostonNimi) throws SailoException {
-        paivat.lueTiedosto(tiedostonNimi);
-        huomiot.lueTiedosto(tiedostonNimi);
+        paivat = new Paivat();
+        huomiot = new Huomiot();
+        
+        setTiedosto(tiedostonNimi);
+        paivat.lueTiedostosta();
+        huomiot.lueTiedosto();
     }
     
     /**
      * Tallentaa rekisterin tiedot tiedostoon
      * @throws SailoException jos tallentaminen ei onnistu
      */
-    public void talleta() throws SailoException {
-        paivat.tallennus();
-        huomiot.tallennus();        
+    public void tallenna() throws SailoException {
+        String virhe = "";
+        try {
+            paivat.tallenna();
+        } catch (SailoException ex) {
+            virhe = ex.getMessage();
+        }
+
+        try {
+            huomiot.tallennus();
+        } catch (SailoException ex) {
+            virhe += ex.getMessage();
+        }
+        if (!"".equals(virhe)) throw new SailoException(virhe);
+   
     }
 
+    /**
+     * @param haku Annettu hakuehto
+     * @param ko Indeksi kentälle
+     * @return tietorakenne löytyneistä päivistä
+     * @throws SailoException Jos tulee virheitä
+     */
+    public Collection<Paiva> etsi(String haku, int ko) throws SailoException {
+        return paivat.etsi(haku, ko);
+    }
+    
     /**,
      * Pääohjelma rekisterin testausta varten
      * @param args ei käytetä
@@ -157,27 +179,6 @@ public class Rekisteri {
         Rekisteri rekisteri = new Rekisteri();
         
         try {
-<<<<<<< HEAD
-
-            Paiva paiva1 = new Paiva(), paiva2 = new Paiva();
-            paiva1.rekisteroi();
-            paiva2.paivanTiedot();
-            paiva2.rekisteroi();
-            paiva2.paivanTiedot();
-
-            rekisteri.lisaa(paiva1);
-            rekisteri.lisaa(paiva2);
-            int id1 = paiva1.getTunnusNro();
-            int id2 = paiva2.getTunnusNro();
-            Huomio huom11 = new Huomio(id1); huom11.vastaaHuomio(id1); rekisteri.lisaa(huom11);
-            Huomio huom12 = new Huomio(id1); huom12.vastaaHuomio(id1); rekisteri.lisaa(huom12);
-            Huomio huom21 = new Huomio(id2); huom21.vastaaHuomio(id2); rekisteri.lisaa(huom21);
-            Huomio huom22 = new Huomio(id2); huom22.vastaaHuomio(id2); rekisteri.lisaa(huom22);
-            Huomio huom23 = new Huomio(id2); huom23.vastaaHuomio(id2); rekisteri.lisaa(huom23);
-
-            System.out.println("============= Kerhon testi =================");
-
-=======
             Paiva maanantai = new Paiva(), tiistai = new Paiva();
             maanantai.rekisteroi();
             maanantai.paivanTiedot();
@@ -194,32 +195,23 @@ public class Rekisteri {
             Huomio sataa21 = new Huomio(tunnus2); sataa21.testiHuomio(tunnus2); rekisteri.lisaa(sataa21);
             Huomio sataa22 = new Huomio(tunnus2); sataa22.testiHuomio(tunnus2); rekisteri.lisaa(sataa22);
             
->>>>>>> ffe04a3fe75ac04eea6189ac36e85be011a80ad8
-            for (int i = 0; i < rekisteri.getPaivia(); i++) {
-                Paiva paiva = rekisteri.annaPaiva(i);
-                System.out.println("Päivä paikassa: " + i);
+            System.out.println("============= Rekisterin testi =================");
+            Collection <Paiva> paivat = rekisteri.etsi("", -1);
+            int i = 0;
+            for (Paiva paiva : paivat) {
+                System.out.println("Päivä kohdassa: " + i);
                 paiva.tulosta(System.out);
-<<<<<<< HEAD
                 List<Huomio> loytyneet = rekisteri.annaHuomio(paiva);
                 for (Huomio huomio : loytyneet)
                     huomio.tulosta(System.out);
-            }
-
-        } catch (SailoException ex) {
-            System.out.println(ex.getMessage());
-        }
-=======
-                List<Huomio> test = rekisteri.annaHuomio(paiva);
-                for(Huomio huom : test) 
-                    huom.tulostus(System.out);
-                
+                i++;                
             }
             
         }  catch (SailoException ex) {
             System.out.println(ex.getMessage());
         }
         
->>>>>>> ffe04a3fe75ac04eea6189ac36e85be011a80ad8
     }
+
     
 }

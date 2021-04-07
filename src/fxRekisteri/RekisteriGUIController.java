@@ -12,6 +12,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List; 
 import java.util.ResourceBundle;
+import java.util.Collection;
+
 
 import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
@@ -32,6 +34,7 @@ import rekisteri.Rekisteri;
 import rekisteri.SailoException;
 
 
+
 /**
  * @author Teemu Kupiainen, Pauli Koivuniemi
  * @version 17 Feb 2021
@@ -44,7 +47,7 @@ public class RekisteriGUIController implements Initializable {
     @FXML private ScrollPane panelPaiva;
     @FXML private ListChooser<Paiva> chooserPaiva; 
     
-    private String rekisterinimi = "2020-2021";
+    
     
     
     @Override
@@ -122,12 +125,8 @@ public class RekisteriGUIController implements Initializable {
     
     
     @FXML private void handleHaku () {
-        String haku = cbPaikka.getSelectedText();
-        String hakuehto = hakuField.getText();
-        if (hakuehto.isEmpty())
-            virhe(null);
-        else 
-            virhe("Ei osata vielä hakea " + haku + ": " + hakuehto);
+        if (paivaKohta != null)
+            hae(paivaKohta.getTunnusNro());
     }
     
     @FXML private void handleAvaa() {
@@ -139,6 +138,7 @@ public class RekisteriGUIController implements Initializable {
     private Rekisteri rekisteri;
     private Paiva paivaKohta;
     private TextArea areaPaiva = new TextArea();
+    private String rekisterinimi = "saarekisteri";
     
     
     /**
@@ -151,8 +151,7 @@ public class RekisteriGUIController implements Initializable {
         
         chooserPaiva.clear();
         chooserPaiva.addSelectionListener(e -> naytaPaiva());
-        
-        
+               
     }
     
        
@@ -190,19 +189,35 @@ public class RekisteriGUIController implements Initializable {
     /**
      * Luetaan rekisteri oikeannimisestä tiedostosta
      * @param nimi Luettava nimi
+     * @return Null jos onnistuu tai virheteksti
      */
-    protected void lueTiedosto(String nimi) {
+    protected String lueTiedosto(String nimi) {
         rekisterinimi = nimi;
         setTitle("Rekisteri - " + rekisterinimi);
-        String virhe = "Ei toimi vielä";
-            Dialogs.showMessageDialog(virhe);
+        try {
+            rekisteri.lueTiedosto(nimi);
+            hae(0);
+            return null;
+        } catch (SailoException e) {
+            hae(0);
+            String virhe = e.getMessage();
+            if (virhe != null) Dialogs.showMessageDialog(virhe);
+            return virhe;
+        }
     }
     
     /**
      * Tallennusmetodi
      */
-    private void tallenna() {
-        Dialogs.showMessageDialog("Tallennus ei toimi vielä");
+    private String tallenna() {
+        try {
+            rekisteri.tallenna();
+            return null;
+        } catch (SailoException ex) {
+            Dialogs.showMessageDialog("Tallennus ei onnistunut! " + ex.getMessage());
+            return ex.getMessage();
+        }
+
     }
     
     
@@ -222,12 +237,15 @@ public class RekisteriGUIController implements Initializable {
     protected void naytaPaiva() {
         paivaKohta = chooserPaiva.getSelectedObject();
         
-        if (paivaKohta == null) return;
+        if (paivaKohta == null) {
+            areaPaiva.clear();
+            return;
+        }
         
         areaPaiva.setText("");
-        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaPaiva)) {
-            tulosta(os,paivaKohta);  
-        }        
+        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaPaiva)){
+            tulosta(os, paivaKohta);
+        }
     }
     
     
@@ -236,13 +254,27 @@ public class RekisteriGUIController implements Initializable {
      * @param paivanro päivän numero
      */
     protected void hae(int paivanro) {
+        int ko = cbPaikka.getSelectionModel().getSelectedIndex();
+        String haku = hakuField.getText();
+        if (ko > 0 || haku.length() > 0)
+            virhe(String.format("Ei osata hakea (kenttä: %d. hakuehto: %s)", ko, haku));
+        else virhe(null);
+        
         chooserPaiva.clear();
         
         int indeksi = 0;
-        for (int i = 0; i < rekisteri.getPaivia(); i++) {
-            Paiva paiva = rekisteri.annaPaiva(i);
-            if (paiva.getTunnusNro() == paivanro) indeksi = i;
-            chooserPaiva.add(paiva.getPaikka(), paiva);
+        Collection<Paiva> paivat;
+        try {
+            paivat = rekisteri.etsi(haku, ko);
+            int i = 0;
+            for (Paiva paiva : paivat) {
+                if (paiva.getTunnusNro() == paivanro) indeksi = i;
+                chooserPaiva.add(paiva.getPaikka(), paiva);
+                i++;
+        }
+
+        } catch (SailoException ex) {
+            Dialogs.showMessageDialog("Päivän hakeminen epäonnistui! " + ex.getMessage());
         }
         chooserPaiva.setSelectedIndex(indeksi);
     }
@@ -272,9 +304,12 @@ public class RekisteriGUIController implements Initializable {
         Huomio huom = new Huomio();
         huom.rekisterointi();
         huom.testiHuomio(paivaKohta.getTunnusNro());
-        rekisteri.lisaa(huom);
+        try {
+            rekisteri.lisaa(huom);
+        } catch (SailoException e) {
+            Dialogs.showMessageDialog("Ongelma huomion lisäämisessä! " + e.getMessage());
+        }
         hae(paivaKohta.getTunnusNro());
-        //TODO: kesken
     }
     
     
@@ -295,10 +330,13 @@ public class RekisteriGUIController implements Initializable {
         os.println("----------------------------------------------");
         paiva.tulosta(os);
         os.println("----------------------------------------------");
-        List<Huomio> huomiot = rekisteri.annaHuomio(paiva);  
-        for (Huomio huom : huomiot)
-            huom.tulostus(os);
-
+        try {
+            List<Huomio> huomiot = rekisteri.annaHuomio(paiva);
+            for (Huomio huom : huomiot)
+                huom.tulostus(os);
+        } catch (SailoException ex) {
+            Dialogs.showMessageDialog("Huomioiden hakemisessa ongelma! " + ex.getMessage());
+        }
     }
     
     /**
@@ -308,11 +346,13 @@ public class RekisteriGUIController implements Initializable {
     public void tulostaHalutut(TextArea text) {
         try (PrintStream os = TextAreaOutputStream.getTextPrintStream(text)) {
             os.println("Tulostetaan päivät");
-            for (int i = 0; i <rekisteri.getPaivia(); i++) {
-                Paiva paiva = rekisteri.annaPaiva(i);
+            Collection <Paiva> paivat = rekisteri.etsi("", -1);
+            for (Paiva paiva : paivat) {
                 tulosta(os,paiva);
                 os.println("\n\n");
             }
+        } catch (SailoException ex) {
+            Dialogs.showMessageDialog("Päivän hakemisessa ongelma! " + ex.getMessage()); 
         }
     }
     

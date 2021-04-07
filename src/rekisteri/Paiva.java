@@ -2,6 +2,8 @@ package rekisteri;
 
 import java.io.*;
 
+import org.junit.platform.engine.support.descriptor.CompositeTestSource;
+
 import fi.jyu.mit.ohj2.Mjonot;
 
 /**
@@ -12,7 +14,7 @@ import fi.jyu.mit.ohj2.Mjonot;
  */
 public class Paiva {
 
-    private int tunnusNro;
+    private int tunnusNro           = 0;
     private String paikka           = "";
     private String aika             = "";
     private String paivaMaara       = "";
@@ -59,6 +61,16 @@ public class Paiva {
         out.println("Tuulen nopeus: " + tuulenNopeus + "m/s");
     }
 
+    /**
+     * Päivän tiedot merkkijonona, jonka voi tallentaa tiedostoon.
+     * @return päivä tolppaeroteltuna merkkijonona
+     * @example
+     * <pre name="test">
+     *   Paiva paiva = new Paiva();
+     *   paiva.parse("   1  |  Lempäälä   | 12:00");
+     *   paiva.toString().startsWith("1|Lempäälä|12:00|") === true;
+     * </pre>
+     */
     @Override
     public String toString() {
         return "" +
@@ -73,8 +85,25 @@ public class Paiva {
                 
     }
     
+    /**
+     * Jäsentää päivän tiedot |-tolpalla erotellusta merkkijonosta
+     * @param rivi josta päivän tiedot otetaan
+     * @example
+     * <pre name="test">
+     *   Paiva paiva = new Paiva();
+     *   paiva.parse("   1  |  Lempäälä   | 12:00");
+     *   paiva.getTunnusNro() === 1;
+     *   paiva.toString().startsWith("1|Lempäälä|12:00|") === true;
+     *   
+     *   paiva.rekisteroi();
+     *   int n = paiva.getTunnusNro();
+     *   paiva.parse(""+(n+5));
+     *   paiva.rekisteroi();
+     *   paiva.getTunnusNro() === n+5+1;
+     * </pre>
+     */
     public void parse(String rivi) {
-                    StringBuffer sb = new StringBuffer(rivi);
+                    StringBuilder sb = new StringBuilder(rivi);
                     setTunnusNro(Mjonot.erota(sb, '|', getTunnusNro()));
                     paikka = Mjonot.erota(sb, '|', paikka);
                     aika = Mjonot.erota(sb, '|', aika);
@@ -91,6 +120,12 @@ public class Paiva {
         return tunnusNro;
     }
     
+    @Override
+    public boolean equals (Object paiva) {
+        if (paiva == null) return false;
+        return this.toString().equals(paiva.toString());
+    }
+    
     /**
      * Tulostetaan päivän tiedot
      * @param os tietovirta johon tulostetaan
@@ -103,6 +138,17 @@ public class Paiva {
     /**
      * Antaa päivälle seuraavan (vapaan) rekisterinumeron
      * @return Päivän uusi tunnunsnumero
+     * @example
+     * <pre name="test">
+     *   Paiva maanantai1 = new Paiva();
+     *   maanantai1.getTunnusNro() === 0;
+     *   maanantai1.rekisteroi();
+     *   Paiva maanantai2 = new Paiva();
+     *   maanantai2.rekisteroi();
+     *   int n1 = maanantai1.getTunnusNro();
+     *   int n2 = maanantai2.getTunnusNro();
+     *   n1 === n2-1;
+     * </pre>
      */
     public int rekisteroi() {
         tunnusNro = seuraava;

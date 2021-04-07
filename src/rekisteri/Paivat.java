@@ -20,12 +20,12 @@ import java.util.NoSuchElementException;
 public class Paivat implements Iterable<Paiva> {
     private static final int MAX_PAIVAT = 10;
     private int lkm = 0;
-    private String paivatTiedosto ="";
+    //private String paivatTiedosto ="";
     private Paiva alkiot[] = new Paiva[MAX_PAIVAT];
     
-    private String tiedostonPerusNimi = "Päivät";
-    private boolean muutettu = false;
-    private String kokoNimi = "Päivät";
+    private String tiedostonPerusNimi = "paivat";
+    private boolean muutos = false;
+    private String paivatTiedosto = "";
     
     
     /**
@@ -81,26 +81,62 @@ public class Paivat implements Iterable<Paiva> {
         if (lkm >= alkiot.length) throw new SailoException("Tietorakenne täynnä");
         alkiot[lkm] = paiva;
         lkm++;
+        muutos = true;
     }
     
-<<<<<<< HEAD
-    public void lueTiedostosta(String tied) throws SailoException {
-        setTiedostonPerusNimi(tied);
+    /**
+     * @param tiedosto tiedoston nimi
+     * @throws SailoException jos tulee virhe
+     * @example
+     * <pre name="test">
+     * #THROWS SailoException 
+     * #import java.io.File;
+     * #import java.util.Iterator;
+     * 
+     *  Paivat paivat = new Paivat();
+     *  Paiva maanantai1 = new Paiva(), maanantai2 = new Paiva();
+     *  maanantai1.paivanTiedot();
+     *  maanantai2.paivanTiedot();
+     *  String hakemisto = "testirekisteri";
+     *  String tiedostoNimi = hakemisto+"/paivat";
+     *  File ftied = new File(tiedostoNimi+".dat");
+     *  File dir = new File(hakemisto);
+     *  dir.mkdir();
+     *  ftied.delete();
+     *  paivat.lueTiedostosta(tiedostoNimi); #THROWS SailoException
+     *  paivat.lisaa(maanantai1);
+     *  paivat.lisaa(maanantai2);
+     *  paivat.tallenna();
+     *  paivat = new Paivat();            // Poistetaan vanhat luomalla uusi
+     *  paivat.lueTiedostosta(tiedostoNimi);  // johon ladataan tiedot tiedostosta.
+     *  Iterator<Paiva> i = paivat.iterator();
+     *  i.next() === maanantai1;
+     *  i.next() === maanantai2;
+     *  i.hasNext() === false;
+     *  paivat.lisaa(maanantai2);
+     *  paivat.tallenna();
+     *  ftied.delete() === true;
+     *  File fbak = new File(tiedostoNimi+".bak");
+     *  fbak.delete() === true;
+     *  dir.delete() === true;
+     * </pre>
+     */
+    public void lueTiedostosta(String tiedosto) throws SailoException {
+        setTiedostonPerusNimi(tiedosto);
         try ( BufferedReader fi = new BufferedReader(new FileReader(getTiedostonNimi())) ) {
-            kokoNimi = fi.readLine();
-            if ( kokoNimi == null ) throw new SailoException("Rekisterin nimi puuttuu");
+            paivatTiedosto = fi.readLine();
+            if ( paivatTiedosto == null ) throw new SailoException("Rekisterin nimi puuttuu");
             String rivi = fi.readLine();
             if ( rivi == null ) throw new SailoException("Maksimikoko puuttuu");
-            // int maxKoko = Mjonot.erotaInt(rivi,10); // tehdään jotakin
 
             while ( (rivi = fi.readLine()) != null ) {
                 rivi = rivi.trim();
                 if ( "".equals(rivi) || rivi.charAt(0) == ';' ) continue;
                 Paiva paiva = new Paiva();
-                paiva.parse(rivi); // voisi olla virhekäsittely
+                paiva.parse(rivi);
                 lisaa(paiva);
             }
-            muutettu = false;
+            muutos = false;
         } catch ( FileNotFoundException e ) {
             throw new SailoException("Tiedosto " + getTiedostonNimi() + " ei aukea");
         } catch ( IOException e ) {
@@ -116,8 +152,12 @@ public class Paivat implements Iterable<Paiva> {
         lueTiedostosta(getTiedostonPerusNimi());
     }
     
-    public void talleta() throws SailoException {
-        if ( !muutettu ) return;
+    /**
+     * Tallentaa päivät tiedostoon
+     * @throws SailoException Jos epäonnistuu
+     */
+    public void tallenna() throws SailoException {
+        if ( !muutos ) return;
 
         File fbak = new File(getBakNimi());
         File ftied = new File(getTiedostonNimi());
@@ -125,7 +165,7 @@ public class Paivat implements Iterable<Paiva> {
         ftied.renameTo(fbak); // if .. System.err.println("Ei voi nimetä");
 
         try ( PrintWriter fo = new PrintWriter(new FileWriter(ftied.getCanonicalPath())) ) {
-            fo.println(getKokoNimi());
+            fo.println(getPaivatTiedosto());
             fo.println(alkiot.length);
             for (Paiva paiva : this) {
                 fo.println(paiva.toString());
@@ -138,7 +178,7 @@ public class Paivat implements Iterable<Paiva> {
             throw new SailoException("Tiedoston " + ftied.getName() + " kirjoittamisessa ongelmia");
         }
 
-        muutettu = false;
+        muutos = false;
     }
     
     /**
@@ -175,11 +215,10 @@ public class Paivat implements Iterable<Paiva> {
          * Palauttaa Rekisterin koko nimen
          * @return Rekisterin koko nimi merkkijononna
          */
-        public String getKokoNimi() {
-            return kokoNimi;
+        public String getPaivatTiedosto() {
+            return paivatTiedosto;
         }
-=======
->>>>>>> ffe04a3fe75ac04eea6189ac36e85be011a80ad8
+
     
     /**
      * Viite paivaan indeksissä i, alkiot[i]-taulukossa
@@ -193,16 +232,6 @@ public class Paivat implements Iterable<Paiva> {
         return alkiot[i];
     }
     
-    
-    /**
-     * Lukee päivät tiedostosta saatiedot.dat
-     * @param hakemisto tiedoston hakemisto
-     * @throws SailoException lukeminen epäonnistuu
-     */
-    public void lueTiedosto(String hakemisto) throws SailoException {
-        paivatTiedosto = hakemisto + "/saatiedot.dat";
-        throw new SailoException("Ei osata lukea" + paivatTiedosto);       
-    }
     
     
     /**
