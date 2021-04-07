@@ -26,6 +26,23 @@ public class Rekisteri {
      * @throws SailoException Jos lisäys ei onnistu
      * @example
      * <pre name="test">
+<<<<<<< HEAD
+     * #THROWS SailoException
+     * Rekisteri rekisteri = new Rekisteri();
+     * Paiva paiva1 = new Paiva(), paiva2 = new Paiva();
+     * paiva1.rekisteroi(); paiva2.rekisteroi();
+     * rekisteri.getPaivia() === 0;
+     * rekisteri.lisaa(paiva1); rekisteri.getPaivia() === 1;
+     * rekisteri.lisaa(paiva2); rekisteri.getPaivia() === 2;
+     * rekisteri.lisaa(paiva1); rekisteri.getPaivia() === 3;
+     * rekisteri.getPaivia() === 3;
+     * rekisteri.annaPaiva(0) === paiva1;
+     * rekisteri.annaPaiva(1) === paiva2;
+     * rekisteri.annaPaiva(2) === paiva1;
+     * rekisteri.annaPaiva(3) === paiva1; #THROWS IndexOutOfBoundsException 
+     * rekisteri.lisaa(paiva1); rekisteri.getPaivia() === 4;
+     * rekisteri.lisaa(paiva1); rekisteri.getPaivia() === 5;
+=======
      *  #THROWS SailoException
      *  Rekisteri rekisteri = new Rekisteri();
      *  Paiva maanantai = new Paiva(), tiistai = new Paiva();
@@ -48,6 +65,7 @@ public class Rekisteri {
      *  rekisteri.lisaa(maanantai); //10
      *  rekisteri.getPaivia() === 10;
      *  rekisteri.lisaa(tiistai); #THROWS SailoException
+>>>>>>> ffe04a3fe75ac04eea6189ac36e85be011a80ad8
      * </pre>
      */
     public void lisaa(Paiva paiva) throws SailoException {
@@ -72,6 +90,9 @@ public class Rekisteri {
         return paivat.anna(i);
     }
     
+<<<<<<< HEAD
+
+=======
     /**
      * Haetaan kaikki huomiot
      * @param paiva päivä jolta huomioita haetaan
@@ -103,8 +124,10 @@ public class Rekisteri {
      *  test.get(0) == sataa2 === true;
      * </pre>
      */
+>>>>>>> ffe04a3fe75ac04eea6189ac36e85be011a80ad8
     public List<Huomio> annaHuomio(Paiva paiva)  {
-        return huomiot.annaHuomio(paiva.getTunnusNro());      
+        return huomiot.annaHuomio(paiva.getTunnusNro());   
+
     }
     
     /**
@@ -134,6 +157,27 @@ public class Rekisteri {
         Rekisteri rekisteri = new Rekisteri();
         
         try {
+<<<<<<< HEAD
+
+            Paiva paiva1 = new Paiva(), paiva2 = new Paiva();
+            paiva1.rekisteroi();
+            paiva2.paivanTiedot();
+            paiva2.rekisteroi();
+            paiva2.paivanTiedot();
+
+            rekisteri.lisaa(paiva1);
+            rekisteri.lisaa(paiva2);
+            int id1 = paiva1.getTunnusNro();
+            int id2 = paiva2.getTunnusNro();
+            Huomio huom11 = new Huomio(id1); huom11.vastaaHuomio(id1); rekisteri.lisaa(huom11);
+            Huomio huom12 = new Huomio(id1); huom12.vastaaHuomio(id1); rekisteri.lisaa(huom12);
+            Huomio huom21 = new Huomio(id2); huom21.vastaaHuomio(id2); rekisteri.lisaa(huom21);
+            Huomio huom22 = new Huomio(id2); huom22.vastaaHuomio(id2); rekisteri.lisaa(huom22);
+            Huomio huom23 = new Huomio(id2); huom23.vastaaHuomio(id2); rekisteri.lisaa(huom23);
+
+            System.out.println("============= Kerhon testi =================");
+
+=======
             Paiva maanantai = new Paiva(), tiistai = new Paiva();
             maanantai.rekisteroi();
             maanantai.paivanTiedot();
@@ -150,10 +194,21 @@ public class Rekisteri {
             Huomio sataa21 = new Huomio(tunnus2); sataa21.testiHuomio(tunnus2); rekisteri.lisaa(sataa21);
             Huomio sataa22 = new Huomio(tunnus2); sataa22.testiHuomio(tunnus2); rekisteri.lisaa(sataa22);
             
+>>>>>>> ffe04a3fe75ac04eea6189ac36e85be011a80ad8
             for (int i = 0; i < rekisteri.getPaivia(); i++) {
                 Paiva paiva = rekisteri.annaPaiva(i);
                 System.out.println("Päivä paikassa: " + i);
                 paiva.tulosta(System.out);
+<<<<<<< HEAD
+                List<Huomio> loytyneet = rekisteri.annaHuomio(paiva);
+                for (Huomio huomio : loytyneet)
+                    huomio.tulosta(System.out);
+            }
+
+        } catch (SailoException ex) {
+            System.out.println(ex.getMessage());
+        }
+=======
                 List<Huomio> test = rekisteri.annaHuomio(paiva);
                 for(Huomio huom : test) 
                     huom.tulostus(System.out);
@@ -164,6 +219,7 @@ public class Rekisteri {
             System.out.println(ex.getMessage());
         }
         
+>>>>>>> ffe04a3fe75ac04eea6189ac36e85be011a80ad8
     }
     
 }

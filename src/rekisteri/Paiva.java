@@ -2,6 +2,8 @@ package rekisteri;
 
 import java.io.*;
 
+import fi.jyu.mit.ohj2.Mjonot;
+
 /**
  * Päivä-luokka
  * @author Teemu Kupiainen, Pauli Koivuniemi
@@ -10,7 +12,7 @@ import java.io.*;
  */
 public class Paiva {
 
-    private int tunnusNro           = 0;
+    private int tunnusNro;
     private String paikka           = "";
     private String aika             = "";
     private String paivaMaara       = "";
@@ -57,6 +59,38 @@ public class Paiva {
         out.println("Tuulen nopeus: " + tuulenNopeus + "m/s");
     }
 
+    @Override
+    public String toString() {
+        return "" +
+                getTunnusNro() + "|" +
+                paikka + "|" +
+                aika + "|" +
+                paivaMaara + "|" +
+                lampoTila + "|" +
+                sadeMaara + "|" +
+                kosteus + "|" +
+                tuulenNopeus + "|";
+                
+    }
+    
+    public void parse(String rivi) {
+                    StringBuffer sb = new StringBuffer(rivi);
+                    setTunnusNro(Mjonot.erota(sb, '|', getTunnusNro()));
+                    paikka = Mjonot.erota(sb, '|', paikka);
+                    aika = Mjonot.erota(sb, '|', aika);
+                    paivaMaara = Mjonot.erota(sb, '|', paivaMaara);
+                    lampoTila = Mjonot.erota(sb, '|', lampoTila);
+                    sadeMaara = Mjonot.erota(sb, '|', sadeMaara);
+                    kosteus = Mjonot.erota(sb, '|', kosteus);
+                    tuulenNopeus = Mjonot.erota(sb, '|', tuulenNopeus);
+                }
+
+    
+    @Override
+    public int hashCode() {
+        return tunnusNro;
+    }
+    
     /**
      * Tulostetaan päivän tiedot
      * @param os tietovirta johon tulostetaan
@@ -76,6 +110,15 @@ public class Paiva {
         return tunnusNro;
     }
     
+    /**
+     * Asettaa tunnusnumeron ja samalla varmistaa että
+     * seuraava numero on aina suurempi kuin tähän mennessä suurin.
+     * @param nr asetettava tunnusnumero
+     */
+    private void setTunnusNro(int nr) {
+        tunnusNro = nr;
+        if (tunnusNro >= seuraava) seuraava = tunnusNro + 1;
+    }
     
     /**
      * Palauttaa päivän tunnusnumeron
@@ -86,14 +129,18 @@ public class Paiva {
     }
     
     
+    
     /**
      * Pääohjelma luokan testausta varten
      * @param args ei käytössä
      */
     public static void main(String args[]) {
-        Paiva keskiviikko = new Paiva();
-        keskiviikko.paivanTiedot();
-        keskiviikko.tulosta(System.out);
+        Paiva paiv1 = new Paiva();
+        Paiva paiv2 = new Paiva();
+        paiv1.paivanTiedot();
+        paiv1.tulosta(System.out);
+        paiv2.paivanTiedot();
+        paiv2.tulosta(System.out);
     }
 
 }
