@@ -242,6 +242,12 @@ public class Paivat implements Iterable<Paiva> {
         return lkm;
     }
     
+    /**
+     * Iteraattori luokka päiville
+     * @author pokoivuu & teemukupiainen
+     * @version 8.4.2021
+     *
+     */
     public class PaivatIterator implements Iterator<Paiva> {
         private int kohdalla = 0;
 
@@ -290,6 +296,13 @@ public class Paivat implements Iterable<Paiva> {
     public Iterator<Paiva> iterator() {
         return new PaivatIterator();
     }
+    
+    /** 
+     * Palauttaa "taulukossa" hakuehtoon vastaavien jäsenten viitteet 
+     * @param hakuehto hakuehto 
+     * @param k etsittävän kentän indeksi  
+     * @return tietorakenteen löytyneistä päivistä
+     */
     
     @SuppressWarnings("unused")
     public Collection<Paiva> etsi(String hakuehto, int k) { 
