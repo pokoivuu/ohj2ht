@@ -15,7 +15,6 @@ import java.util.ResourceBundle;
 import java.util.Collection;
 import static fxRekisteri.TietueDialogController.getFieldId;
 
-import fi.jyu.mit.barChart.BarChart;
 import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ListChooser;
@@ -25,6 +24,7 @@ import fi.jyu.mit.fxgui.TextAreaOutputStream;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -57,11 +57,11 @@ public class RekisteriGUIController implements Initializable {
     @FXML private GridPane gridPaiva;
     @FXML private ListChooser<Paiva> chooserPaiva; 
     @FXML private StringGrid<Huomio> tableHuomiot;
-    /*
-    @FXML private BarChart sadeChart;
+    
+    @FXML private BarChart<String, Number> sadeChart;
     @FXML private CategoryAxis x;
     @FXML private NumberAxis y;
-    */
+    
     
     
     
@@ -182,7 +182,7 @@ public class RekisteriGUIController implements Initializable {
             if (muutos != null) {
                 muutos.setEditable(false);
                 muutos.setOnMouseClicked(e -> { if ( e.getClickCount() > 1 ) muokkaa(getFieldId(e.getSource(),0)); });  
-                muutos.focusedProperty().addListener((a,o,n) -> kentta = getFieldId(muutos,kentta));
+                muutos.focusedProperty().addListener((a,o,n) -> kentta = getFieldId(muutos, kentta));
             }
         
         int eka = apuhuomio.ensimmainenKentta();
@@ -202,11 +202,9 @@ public class RekisteriGUIController implements Initializable {
         tableHuomiot.setOnMouseClicked( e -> { if ( e.getClickCount() > 1 ) tableHuomiot.setEditable(true); } );
         tableHuomiot.setOnMouseClicked( e -> { if ( e.getClickCount() > 1 ) muokkaaHuomiota(); } );        
         
-        /*
-        XYChart.Series<?,?> series = new XYChart.Series<>();
-        series.setName("Peruna");
-        sadeChart.getData(500);
-        */
+        Series<String, Number> set  = new XYChart.Series<>();
+        set.getData().add(new XYChart.Data<String, Number>("peruna", apupaiva.getSademaara()));
+        sadeChart.getData().addAll(set);
         
     }
     
