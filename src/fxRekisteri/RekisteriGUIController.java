@@ -60,7 +60,6 @@ public class RekisteriGUIController implements Initializable {
     
     @FXML private BarChart<String, Number> sadeChart;
     @FXML private CategoryAxis x;
-    @FXML private NumberAxis y;
     
     
     
@@ -152,6 +151,10 @@ public class RekisteriGUIController implements Initializable {
         avaa();
     }
     
+    @FXML private void handleTyhjenna() {
+        sadeChart.getData().clear();
+    }
+    
     /// Alemmat eivät liity suoraan käyttöliittymään
     
     private Rekisteri rekisteri;
@@ -202,9 +205,6 @@ public class RekisteriGUIController implements Initializable {
         tableHuomiot.setOnMouseClicked( e -> { if ( e.getClickCount() > 1 ) tableHuomiot.setEditable(true); } );
         tableHuomiot.setOnMouseClicked( e -> { if ( e.getClickCount() > 1 ) muokkaaHuomiota(); } );        
         
-        Series<String, Number> set  = new XYChart.Series<>();
-        set.getData().add(new XYChart.Data<String, Number>("peruna", apupaiva.getSademaara()));
-        sadeChart.getData().addAll(set);
         
     }
     
@@ -293,6 +293,10 @@ public class RekisteriGUIController implements Initializable {
 
         TietueDialogController.naytaTietue(muutokset, paivaKohta);
         naytaHuomiot(paivaKohta);
+        
+        Series<String, Number> set  = new XYChart.Series<>();
+        set.getData().add(new XYChart.Data<String, Number>(paivaKohta.getPaikka(), paivaKohta.getSademaara()));
+        sadeChart.getData().add(set);
     }
     
     
