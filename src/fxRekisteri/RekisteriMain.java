@@ -43,8 +43,6 @@ public class RekisteriMain extends Application {
             else
                 if ( !rekisteriCtrl.avaa() ) Platform.exit();
 
-
-
         } catch(Exception e) {
             e.printStackTrace();
         }

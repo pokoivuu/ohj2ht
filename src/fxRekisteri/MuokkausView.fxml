@@ -4,18 +4,19 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fi.jyu.mit.fxgui.ModalController">
+<BorderPane xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxRekisteri.PaivaDialogController">
    <center>
-      <AnchorPane prefHeight="215.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <GridPane layoutY="5.0" prefHeight="149.0" prefWidth="200.0">
+      <ScrollPane fx:id="panelPaiva" prefHeight="255.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <content>
+            <GridPane fx:id="gridPaiva" prefHeight="149.0" prefWidth="200.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -91,15 +92,20 @@
                   </TextField>
                </children>
             </GridPane>
-         </children>
-      </AnchorPane>
+         </content>
+      </ScrollPane>
    </center>
    <bottom>
-      <ButtonBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0">
-        <buttons>
-          <Button alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#handleDefaultOK" text="OK" />
-            <Button cancelButton="true" minWidth="48.0" mnemonicParsing="false" onAction="#handleDefaultCancel" prefHeight="25.0" text="Cancel" />
-        </buttons>
-      </ButtonBar>
+      <VBox prefHeight="58.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label fx:id="labelVirhe" />
+            <ButtonBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="40.0" prefWidth="200.0">
+              <buttons>
+                <Button alignment="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#handleOK" text="OK" />
+                  <Button cancelButton="true" minWidth="48.0" mnemonicParsing="false" onAction="#handleCancel" prefHeight="25.0" text="Cancel" />
+              </buttons>
+            </ButtonBar>
+         </children>
+      </VBox>
    </bottom>
 </BorderPane>

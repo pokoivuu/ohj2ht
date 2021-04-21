@@ -13,20 +13,24 @@ import java.net.URL;
 import java.util.List; 
 import java.util.ResourceBundle;
 import java.util.Collection;
+import static fxRekisteri.TietueDialogController.getFieldId; 
 
 
 import fi.jyu.mit.fxgui.ComboBoxChooser;
 import fi.jyu.mit.fxgui.Dialogs;
 import fi.jyu.mit.fxgui.ListChooser;
 import fi.jyu.mit.fxgui.ModalController;
+import fi.jyu.mit.fxgui.StringGrid;
 import fi.jyu.mit.fxgui.TextAreaOutputStream;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import rekisteri.Huomio;
 import rekisteri.Paiva;
@@ -45,8 +49,9 @@ public class RekisteriGUIController implements Initializable {
     @FXML private ComboBoxChooser<String> cbPaikka;
     @FXML private Label labelVirhe;
     @FXML private ScrollPane panelPaiva;
+    @FXML private GridPane gridPaiva;
     @FXML private ListChooser<Paiva> chooserPaiva; 
-    
+    @FXML private StringGrid<Huomio> tableHuomiot;
     
     
     
@@ -80,13 +85,17 @@ public class RekisteriGUIController implements Initializable {
     }
     
     
-    @FXML private void handleMenuMuokkaa() {
-        ModalController.showModal(RekisteriGUIController.class.getResource("MuokkausView.fxml"), "Muokkaus", null, "");
+    @FXML private void handleMuokkaaPaivaa() {
+        muokkaa(kentta);
+        //ModalController.showModal(RekisteriGUIController.class.getResource("MuokkausView.fxml"), "Muokkaus", null, "");
     }
     
-    
+    @FXML private void handleHakuehto() {
+        hae(0);
+    }
+       
     @FXML private void handleMenuPoista() {
-        Dialogs.showMessageDialog("Ei toimi vielä");
+        poistaPaiva();
     }
     
     
@@ -108,12 +117,12 @@ public class RekisteriGUIController implements Initializable {
     
     
     @FXML private void handlePoistaHuomio() {
-        Dialogs.showMessageDialog("Ei toimi vielä");
+        poistaHuomio();
     }
     
     
     @FXML private void handleMuokkaaHuomio() {
-        Dialogs.showMessageDialog("Ei toimi vielä");
+        muokkaaHuomiota();
     }
     
     
@@ -137,21 +146,52 @@ public class RekisteriGUIController implements Initializable {
     
     private Rekisteri rekisteri;
     private Paiva paivaKohta;
-    private TextArea areaPaiva = new TextArea();
+    //private TextArea areaPaiva = new TextArea();
     private String rekisterinimi = "saarekisteri";
+    private int kentta = 0;
+    private TextField muutokset[];
+    private static Huomio apuhuomio = new Huomio();
+    private static Paiva apupaiva = new Paiva();
+    
     
     
     /**
      * Tekee alustukset
      */
     protected void alusta() {
-        panelPaiva.setContent(areaPaiva);
-        areaPaiva.setFont(new Font("Times New Roman", 12));
-        panelPaiva.setFitToHeight(true);
-        
         chooserPaiva.clear();
         chooserPaiva.addSelectionListener(e -> naytaPaiva());
-               
+        
+        cbPaikka.clear();
+        for (int k = apupaiva.ensimmainenKentta(); k < apupaiva.getKenttia(); k++) 
+            cbPaikka.add(apupaiva.getKysymys(k), null);
+        cbPaikka.getSelectionModel().select(0);
+        
+        muutokset = TietueDialogController.luoKentat(gridPaiva, apupaiva);
+        for (TextField muutos: muutokset)
+            if (muutos != null) {
+                muutos.setEditable(false);
+                muutos.setOnMouseClicked(e -> { if ( e.getClickCount() > 1 ) muokkaa(getFieldId(e.getSource(),0)); });  
+                muutos.focusedProperty().addListener((a,o,n) -> kentta = getFieldId(muutos,kentta));
+            }
+        
+        int eka = apuhuomio.ensimmainenKentta();
+        int lkm = apuhuomio.getKenttia();
+        String[] headings = new String[lkm-eka];
+        for (int i = 0, k = eka; k < lkm; i++, k++) headings[i] = apuhuomio.getKysymys(k);
+        tableHuomiot.initTable(headings);
+        tableHuomiot.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        tableHuomiot.setEditable(false);
+        tableHuomiot.setPlaceholder(new Label("Ei vielä huomioita"));
+        
+        tableHuomiot.setColumnSortOrderNumber(1);
+        tableHuomiot.setColumnSortOrderNumber(2);
+        tableHuomiot.setColumnWidth(1, 60);
+        tableHuomiot.setColumnWidth(2, 60);
+        
+        tableHuomiot.setOnMouseClicked( e -> { if ( e.getClickCount() > 1 ) tableHuomiot.setEditable(true); } );
+        tableHuomiot.setOnMouseClicked( e -> { if ( e.getClickCount() > 1 ) muokkaaHuomiota(); } );       
+        
     }
     
        
@@ -217,7 +257,6 @@ public class RekisteriGUIController implements Initializable {
             Dialogs.showMessageDialog("Tallennus ei onnistunut! " + ex.getMessage());
             return ex.getMessage();
         }
-
     }
     
     
@@ -235,17 +274,11 @@ public class RekisteriGUIController implements Initializable {
      * Näyttää päivän tiedot
      */
     protected void naytaPaiva() {
-        paivaKohta = chooserPaiva.getSelectedObject();
-        
-        if (paivaKohta == null) {
-            areaPaiva.clear();
-            return;
-        }
-        
-        areaPaiva.setText("");
-        try (PrintStream os = TextAreaOutputStream.getTextPrintStream(areaPaiva)){
-            tulosta(os, paivaKohta);
-        }
+        paivaKohta = chooserPaiva.getSelectedObject();        
+        if (paivaKohta == null) return;
+
+        TietueDialogController.naytaTietue(muutokset, paivaKohta);
+        naytaHuomiot(paivaKohta);
     }
     
     
@@ -254,11 +287,15 @@ public class RekisteriGUIController implements Initializable {
      * @param paivanro päivän numero
      */
     protected void hae(int paivanro) {
-        int ko = cbPaikka.getSelectionModel().getSelectedIndex();
+        int pnro = paivanro;
+        if (pnro <= 0) {
+            Paiva kohdalla = paivaKohta;
+            if (kohdalla != null) pnro = kohdalla.getTunnusNro();
+        }
+        
+        int ko = cbPaikka.getSelectionModel().getSelectedIndex() + apupaiva.ensimmainenKentta();
         String haku = hakuField.getText();
-        if (ko > 0 || haku.length() > 0)
-            virhe(String.format("Ei osata hakea (kenttä: %d. hakuehto: %s)", ko, haku));
-        else virhe(null);
+        if (haku.indexOf('*') < 0) haku = "*" + haku + "*";
         
         chooserPaiva.clear();
         
@@ -269,7 +306,7 @@ public class RekisteriGUIController implements Initializable {
             int i = 0;
             for (Paiva paiva : paivat) {
                 if (paiva.getTunnusNro() == paivanro) indeksi = i;
-                chooserPaiva.add(paiva.getPaikka(), paiva);
+                chooserPaiva.add(paiva.getPaikka() + " " + paiva.getPaivamaara(), paiva);
                 i++;
         }
 
@@ -284,32 +321,91 @@ public class RekisteriGUIController implements Initializable {
      * Luodaan uusi päivä
      */
     protected void uusiPaiva() {
-        Paiva uusiPaiva = new Paiva();
-        uusiPaiva.rekisteroi();
-        uusiPaiva.paivanTiedot();
         try {
-            rekisteri.lisaa(uusiPaiva);
-        } catch (SailoException e) {
-            Dialogs.showMessageDialog("Ongelmia uuden päivän luomisessa" + e.getMessage());
-        }
+        Paiva uusiPaiva = new Paiva();
+        uusiPaiva = TietueDialogController.kysyTietue(null, uusiPaiva, 1);
+        if (uusiPaiva == null) return;
+        uusiPaiva.rekisteroi();
+        rekisteri.lisaa(uusiPaiva);
         hae(uusiPaiva.getTunnusNro());
+        } catch (SailoException e) {
+            Dialogs.showMessageDialog("Ongelmia uuden luomisessa " + e.getMessage());
+            return;
+        }                
+    }
+    
+    private void naytaHuomiot(Paiva paiva) {
+        tableHuomiot.clear();
+        if (paiva == null) return;
+        
+        try {
+            List<Huomio> huomiot = rekisteri.annaHuomio(paiva);
+            if (huomiot.size() == 0) return;
+            for (Huomio huom: huomiot)
+                naytaHuomio(huom);
+        } catch (SailoException e) {
+            virhe(e.getMessage());
+        }
+    }
+    
+    private void naytaHuomio(Huomio huom) {
+        int kenttia = huom.getKenttia(); 
+        String[] rivi = new String[kenttia-huom.ensimmainenKentta()]; 
+        for (int i=0, k = huom.ensimmainenKentta(); k < kenttia; i++, k++) 
+            rivi[i] = huom.anna(k); 
+        tableHuomiot.add(huom,rivi);
     }
     
     
     /**
      * 
      */
-    public void uusiHuomio() {
+    private void uusiHuomio() {
         if (paivaKohta == null) return;
-        Huomio huom = new Huomio();
-        huom.rekisterointi();
-        huom.testiHuomio(paivaKohta.getTunnusNro());
         try {
+            Huomio huom = new Huomio(paivaKohta.getTunnusNro());
+            huom = TietueDialogController.kysyTietue(null, huom, 0);
+            if (huom == null) return;
+            huom.rekisterointi();
             rekisteri.lisaa(huom);
+            naytaHuomiot(paivaKohta);
+            tableHuomiot.selectRow(1000);
         } catch (SailoException e) {
             Dialogs.showMessageDialog("Ongelma huomion lisäämisessä! " + e.getMessage());
         }
-        hae(paivaKohta.getTunnusNro());
+    }
+    
+    private void muokkaaHuomiota() {
+        int r = tableHuomiot.getRowNr();
+        if ( r < 0 ) return;
+        Huomio huom = tableHuomiot.getObject();
+        if ( huom == null ) return;
+        int k = tableHuomiot.getColumnNr()+huom.ensimmainenKentta();
+        try {
+            huom = TietueDialogController.kysyTietue(null, huom.clone(), k);
+            if ( huom == null ) return;
+            rekisteri.korvaaLisaa(huom); 
+            naytaHuomiot(paivaKohta); 
+            tableHuomiot.selectRow(r);  
+        } catch (CloneNotSupportedException  e) { /* clone on tehty */  
+        } catch (SailoException e) {
+            Dialogs.showMessageDialog("Ongelmia lisäämisessä: " + e.getMessage());
+        }
+    }
+    
+    private void muokkaa(int k) {
+        if (paivaKohta == null) return;
+        try {
+            Paiva paiva;
+            paiva = TietueDialogController.kysyTietue(null, paivaKohta.clone(), k);
+            if (paiva == null) return;
+            rekisteri.korvaaLisaa(paiva);
+            hae(paiva.getTunnusNro());
+        } catch (CloneNotSupportedException e){
+            //
+        } catch (SailoException e) {
+            Dialogs.showMessageDialog(e.getMessage());
+        }
     }
     
     
@@ -319,6 +415,33 @@ public class RekisteriGUIController implements Initializable {
     public void setRekisteri(Rekisteri rekisteri) {
         this.rekisteri = rekisteri;
         naytaPaiva();
+    }
+    
+    /**
+     * Poistetaan huomiotaulukosta valitulla kohdalla oleva huomio. 
+     */
+    private void poistaHuomio() {
+        int rivi = tableHuomiot.getRowNr();
+        if ( rivi < 0 ) return;
+        Huomio huom = tableHuomiot.getObject();
+        if ( huom == null ) return;
+        rekisteri.poistaHuomio(huom);
+        naytaHuomiot(paivaKohta);
+        int huomioita = tableHuomiot.getItems().size(); 
+        if ( rivi >= huomioita ) rivi = huomioita -1;
+        tableHuomiot.getFocusModel().focus(rivi);
+        tableHuomiot.getSelectionModel().select(rivi);
+    }
+
+    private void poistaPaiva() {
+        Paiva paiva = paivaKohta;
+        if ( paiva == null ) return;
+        if ( !Dialogs.showQuestionDialog("Poisto", "Poistetaanko päivä: " + paiva.getPaivamaara(), "Kyllä", "Ei") )
+            return;
+        rekisteri.poista(paiva);
+        int index = chooserPaiva.getSelectedIndex();
+        hae(0);
+        chooserPaiva.setSelectedIndex(index);
     }
     
     

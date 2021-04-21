@@ -1,8 +1,9 @@
 package rekisteri;
 
 import java.io.*;
-
 import fi.jyu.mit.ohj2.Mjonot;
+import kanta.PvmTarkistus;
+import kanta.Tietue;
 
 /**
  * Huomio-luokka, rekisteröidään huomioita uniikilla identifikaattorilla
@@ -10,7 +11,7 @@ import fi.jyu.mit.ohj2.Mjonot;
  * @version 11 Mar 2021
  *
  */
-public class Huomio {
+public class Huomio implements Cloneable, Tietue {
     private int paivatunnus;
     private int huomiotunnus;
     private String merkinta;
@@ -130,7 +131,15 @@ public class Huomio {
      */
     @Override
     public String toString() {
-        return "" + getHuomioId() + "|" + paivatunnus + "|" + merkinta + "|" + klo;
+        StringBuilder sb = new StringBuilder("");
+        
+        String e = "";
+        for (int k = 0; k < getKenttia(); k++) {
+            sb.append(e);
+            sb.append(anna(k));
+            e = "|";
+        }
+        return sb.toString();
     }
     
     /**
@@ -148,16 +157,14 @@ public class Huomio {
      *   huomio.parse(""+(n+5));
      *   huomio.rekisterointi();
      *   huomio.getHuomioId() === n+5+1;
-     *   huomio.toString()     === "" + (n+5+1) + "|5|Sataa paljon|12:00";
-
+     *   huomio.toString()     === "" + (n+5+1) + "|5||";
      * </pre>
      */
     public void parse(String rivi) {
         StringBuilder sb = new StringBuilder(rivi);
-        setHuomioId(Mjonot.erota(sb, '|', getHuomioId()));
-        paivatunnus = Mjonot.erota(sb, '|', paivatunnus);
-        merkinta = Mjonot.erota(sb, '|', merkinta);
-        klo = Mjonot.erota(sb, '|', klo);
+        for (int k = 0; k < getKenttia(); k++) {
+            aseta(k, Mjonot.erota(sb, '|'));
+        }
     }
     
     @Override
@@ -171,6 +178,81 @@ public class Huomio {
         return huomiotunnus;
     }
     
+    @Override
+    /**
+     * @return kenttien lkm
+     */
+    public int getKenttia() {
+        return 4;
+    }
+    
+    @Override
+    public int ensimmainenKentta() {
+        return 2;
+    }
+    
+    @Override
+    public String getKysymys(int k) {
+        switch (k) {
+        case 0:
+            return "id";
+        case 1:
+            return "päiväId";
+        case 2:
+            return "merkintä";
+        case 3:
+            return "klo";
+        default:
+            return "???";
+        }
+    }
+    
+    @Override
+    public String anna(int k) {
+        switch (k) {
+        case 0:
+            return "" + huomiotunnus;
+        case 1:
+            return "" + paivatunnus;
+        case 2: 
+            return "" + merkinta;
+        case 3:
+            return "" + klo;
+        default: 
+            return "???";
+        }
+    }
+    
+    @Override
+    public String aseta(int k, String s) {
+        String st = s.trim();
+        StringBuilder sb = new StringBuilder(st);
+        switch (k) {
+        case 0:
+            setHuomioId(Mjonot.erota(sb, '$', getHuomioId()));
+            return null;
+        case 1:
+            paivatunnus = Mjonot.erota(sb, '$', paivatunnus);
+            return null;
+        case 2:
+            merkinta = st;
+            return null;
+        case 3:
+            PvmTarkistus kello = new PvmTarkistus();
+            String virhe = kello.tarkistaKello(st);
+            if (virhe != null) return virhe;
+            klo = st;
+            return null;
+        default:
+            return "Väärä indeksi";
+        }
+    }
+    
+    @Override
+    public Huomio clone() throws CloneNotSupportedException { 
+        return (Huomio)super.clone();
+    }
+
     /**
      * testiohjelma Huomioille
      * @param args ei käytössä
@@ -182,7 +264,4 @@ public class Huomio {
         huom.tulostus(System.out);
 
     }
-
-
-
 }

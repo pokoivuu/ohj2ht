@@ -13,7 +13,10 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -21,7 +24,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane prefHeight="431.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxRekisteri.RekisteriGUIController">
+<BorderPane prefHeight="497.0" prefWidth="733.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fxRekisteri.RekisteriGUIController">
    <bottom>
       <HBox prefHeight="25.0" prefWidth="310.0" spacing="10.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -46,7 +49,7 @@
           <Menu mnemonicParsing="false" text="Muokkaa">
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#handleMenuLisaa" text="Lisää päivä" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleMenuMuokkaa" text="Muokkaa päivää" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMuokkaaPaivaa" text="Muokkaa päivää" />
               <MenuItem mnemonicParsing="false" onAction="#handleMenuPoista" text="Poista päivä..." />
             </items>
           </Menu>
@@ -102,7 +105,7 @@
                   <Label text="Huomioita" BorderPane.alignment="CENTER" />
                </top>
                <center>
-                  <StringGrid rivit="Huomio| Kellonaika&#10;Lehmiä lentää| 09:15&#10;Tavallista kylmempää| 12:15&#10;&#10;" BorderPane.alignment="CENTER" />
+                  <StringGrid fx:id="tableHuomiot" editable="true" rivit="Huomio| Kellonaika&#10;Lehmiä lentää| 09:15&#10;Tavallista kylmempää| 12:15&#10;&#10;" BorderPane.alignment="CENTER" />
                </center>
                <bottom>
                   <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="33.0" prefWidth="201.0" BorderPane.alignment="CENTER">
@@ -134,20 +137,10 @@
          </bottom>
          <center>
             <BorderPane prefWidth="200.0" BorderPane.alignment="CENTER">
-               <bottom>
-                  <BarChart prefHeight="193.0" prefWidth="249.0" BorderPane.alignment="CENTER">
-                    <xAxis>
-                      <CategoryAxis side="BOTTOM" />
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis side="LEFT" />
-                    </yAxis>
-                  </BarChart>
-               </bottom>
                <top>
                   <ScrollPane fx:id="panelPaiva" fitToWidth="true" pannable="true" BorderPane.alignment="CENTER">
                      <content>
-                        <GridPane hgap="10.0">
+                        <GridPane fx:id="gridPaiva" hgap="10.0">
                           <columnConstraints>
                             <ColumnConstraints fillWidth="false" halignment="RIGHT" hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
                             <ColumnConstraints hgrow="ALWAYS" maxWidth="72.0" minWidth="68.0" prefWidth="68.0" />
@@ -177,6 +170,44 @@
                      </content>
                   </ScrollPane>
                </top>
+               <bottom>
+                  <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+                    <tabs>
+                      <Tab text="Untitled Tab 1">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <BarChart fx:id="barChart" prefHeight="170.0" prefWidth="284.0" title="Sademäärä">
+                                      <xAxis>
+                                        <CategoryAxis side="BOTTOM" fx:id="x" />
+                                      </xAxis>
+                                      <yAxis>
+                                        <NumberAxis fx:id="y" side="LEFT" />
+                                      </yAxis>
+                                    </BarChart>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                      <Tab text="Untitled Tab 2">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <BarChart layoutY="1.0" prefHeight="170.0" prefWidth="284.0">
+                                      <xAxis>
+                                        <CategoryAxis side="BOTTOM" />
+                                      </xAxis>
+                                      <yAxis>
+                                        <NumberAxis side="LEFT" />
+                                      </yAxis>
+                                    </BarChart>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                    </tabs>
+                  </TabPane>
+               </bottom>
             </BorderPane>
          </center>
       </BorderPane>

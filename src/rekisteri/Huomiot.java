@@ -7,6 +7,7 @@ package rekisteri;
 import java.io.*;
 import java.util.*;
 
+
 /**
  * Huomiot-luokka, jossa lisätään esim. uusi huomio
  * Luetaan tiedosto, johon tallennetaan
@@ -20,7 +21,7 @@ public class Huomiot implements Iterable<Huomio> {
     private String tiedostonPerusNimi ="";
     private boolean muutos = false;
     
-    private final Collection<Huomio> taulukko = new ArrayList<Huomio>();
+    private final List<Huomio> taulukko = new ArrayList<Huomio>();
     
     
     /**
@@ -40,9 +41,71 @@ public class Huomiot implements Iterable<Huomio> {
         muutos = true;
     }
     
+    /**
+     * @param huomio lisättävä huomio
+     * @throws SailoException Jos tietorakenne täysi
+     * <pre name="test">
+     * #THROWS SailoException,CloneNotSupportedException
+     * #PACKAGEIMPORT
+     * Huomiot huomiot = new Huomiot();
+     * Huomio huom1 = new Huomio(), huom2 = new Huomio();
+     * huom1.rekisterointi(); huom2.rekisterointi();
+     * huomiot.getLkm() === 0;
+     * huomiot.korvaaLisaa(huom1); huomiot.getLkm() === 1;
+     * huomiot.korvaaLisaa(huom1); huomiot.getLkm() === 2;
+     * Huomio huom3 = huom1.clone();
+     * huom3.aseta(2,"kkk");
+     * Iterator<Huomio> i2=huomiot.iterator();
+     * i2.next() === huom1;
+     * huomiot.korvaaLisaa(huom3); huomiot.getLkm() === 2;
+     * i2=huomiot.iterator();
+     * Huomio h = i2.next();
+     * h === huom3;
+     * h == huom3 === true;
+     * h == huom1 === false;
+     * </pre>
+     */ 
+    public void korvaaLisaa(Huomio huomio) throws SailoException {
+        int id = huomio.getHuomioId();
+        for (int i = 0; i < getLkm(); i++) {
+            if (taulukko.get(i).getHuomioId() == id) {
+                taulukko.set(i, huomio);
+                muutos = true;
+                return;
+            }
+        }
+        lisaa(huomio);
+    }
+
+    /**
+     * @param huomio poistettava huomio
+     * @return tosi jos löytyi poistettava
+     */
+    public boolean poista(Huomio huomio) {
+        boolean ret = taulukko.remove(huomio);
+        if (ret) muutos = true; 
+        return ret;       
+    }
     
     /**
-     * Lukee tiedoston //(KESKEN)
+     * @param tunnusNro päivän viite, mistä huomiot poistetaan
+     * @return montako meni poistoon
+     */
+    public int poistaPaivanHuomiot(int tunnusNro) {
+        int n = 0;
+        for (Iterator<Huomio> it = taulukko.iterator(); it.hasNext();) {
+            Huomio huom = it.next();
+            if ( huom.getPaivaId() == tunnusNro ) {
+                it.remove();
+                n++;
+            }
+        }
+        if (n > 0) muutos = true;
+        return n;
+    }
+    
+    /**
+     * Lukee tiedoston
      * @param tiedosto tiedosto
      * @throws SailoException Jos lukeminen ei onnistu
      * @example

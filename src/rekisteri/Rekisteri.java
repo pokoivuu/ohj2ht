@@ -8,7 +8,47 @@ import java.util.List;
  * Rekisteriluokka
  * @author Teemu Kupiainen, Pauli Koivuniemi
  * @version 11 Mar 2021
- *
+ * Testien alustus
+ ** @example
+ * <pre name="testJAVA">
+ * #import rekisteri.SailoException;
+ *  private Rekisteri rekisteri;
+ *  private Paiva maa1;
+ *  private Paiva maa2;
+ *  private int pid1;
+ *  private int pid2;
+ *  private Huomio sataa21;
+ *  private Huomio sataa11;
+ *  private Huomio sataa22; 
+ *  private Huomio sataa12; 
+ *  private Huomio sataa23;
+ *  
+ *  @SuppressWarnings("javadoc")
+ *  public void alustaRekisteri() {
+ *    rekisteri = new Rekisteri();
+ *    maa1 = new Paiva(); maa1.paivanTiedot(); maa1.rekisteroi();
+ *    maa2 = new Paiva(); maa2.paivanTiedot(); maa2.rekisteroi();
+ *    pid1 = maa1.getTunnusNro();
+ *    pid2 = maa2.getTunnusNro();
+ *    sataa21 = new Huomio(pid2); sataa21.testiHuomio(pid2);
+ *    sataa11 = new Huomio(pid1); sataa11.testiHuomio(pid1);
+ *    sataa22 = new Huomio(pid2); sataa22.testiHuomio(pid2); 
+ *    sataa12 = new Huomio(pid1); sataa12.testiHuomio(pid1); 
+ *    sataa23 = new Huomio(pid2); sataa23.testiHuomio(pid2);
+ *    try {
+ *    rekisteri.lisaa(maa1);
+ *    rekisteri.lisaa(maa2);
+ *    rekisteri.lisaa(sataa21);
+ *    rekisteri.lisaa(sataa11);
+ *    rekisteri.lisaa(sataa22);
+ *    rekisteri.lisaa(sataa12);
+ *    rekisteri.lisaa(sataa23);
+ *    } catch ( Exception e) {
+ *       System.err.println(e.getMessage());
+ *    }
+ *  }
+ * </pre>
+
  */
 public class Rekisteri {
     private Huomiot huomiot = new Huomiot();
@@ -29,27 +69,10 @@ public class Rekisteri {
      * @example
      * <pre name="test">
      * #THROWS SailoException
-     *  Rekisteri rekisteri = new Rekisteri();
-     *  Paiva maanantai = new Paiva(), tiistai = new Paiva();
-     *  maanantai.rekisteroi(); tiistai.rekisteroi();
-     *  
-     *  rekisteri.getPaivia() === 0;
-     *  rekisteri.lisaa(maanantai); rekisteri.getPaivia() === 1;
-     *  rekisteri.lisaa(tiistai); rekisteri.getPaivia() === 2;
-     *  rekisteri.lisaa(maanantai); rekisteri.getPaivia() === 3;
-     *  rekisteri.annaPaiva(0) === maanantai;
-     *  rekisteri.annaPaiva(1) === tiistai;
-     *  rekisteri.annaPaiva(2) === maanantai;
-     *  rekisteri.annaPaiva(3) === maanantai; #THROWS IndexOutOfBoundsException
-     *  rekisteri.lisaa(maanantai); rekisteri.getPaivia() === 4;
-     *  rekisteri.lisaa(maanantai); rekisteri.getPaivia() === 5;
-     *  rekisteri.lisaa(maanantai); //6
-     *  rekisteri.lisaa(maanantai); //7
-     *  rekisteri.lisaa(maanantai); //8
-     *  rekisteri.lisaa(maanantai); //9
-     *  rekisteri.lisaa(maanantai); //10
-     *  rekisteri.getPaivia() === 10;
-     *  rekisteri.lisaa(tiistai); #THROWS SailoException
+     *  alustaRekisteri();
+     *  rekisteri.etsi("*",0).size() === 2;
+     *  rekisteri.lisaa(maa1);
+     *  rekisteri.etsi("*",0).size() === 3;
      * </pre>
      */
     public void lisaa(Paiva paiva) throws SailoException {
@@ -63,6 +86,75 @@ public class Rekisteri {
      */
     public void lisaa(Huomio h) throws SailoException {
         huomiot.lisaa(h);
+    }
+    
+    /** 
+     * Korvaa päivän tietorakenteessa.
+     * Etsitään samalla tunnusnumerolla oleva päivä.  Jos ei löydy, 
+     * niin lisätään uutena päivänä. 
+     * @param paiva lisättävän päivän viite.  Huom tietorakenne muuttuu omistajaksi 
+     * @throws SailoException jos tietorakenne on jo täynnä 
+     * @example
+     * <pre name="test">
+     * #THROWS SailoException  
+     *  alustaRekisteri();
+     *  rekisteri.etsi("*",0).size() === 2;
+     *  rekisteri.korvaaLisaa(maa1);
+     *  rekisteri.etsi("*",0).size() === 2;
+     * </pre>
+     */ 
+    public void korvaaLisaa(Paiva paiva) throws SailoException { 
+        paivat.korvaaLisaa(paiva); 
+    } 
+
+    /** 
+     * Korvaa huomion tietorakenteessa.
+     * Etsitään samalla tunnusnumerolla oleva huomio.  Jos ei löydy, 
+     * niin lisätään uutena huomiona. 
+     * @param huomio lisättävän huomion viite.  Huom tietorakenne muuttuu omistajaksi 
+     * @throws SailoException jos tietorakenne on jo täynnä 
+     */ 
+    public void korvaaLisaa(Huomio huomio) throws SailoException { 
+        huomiot.korvaaLisaa(huomio); 
+    } 
+
+    
+    /**
+     * Poistaa päivistä ja huomioista päivän tiedot
+     * @param paiva päivä, jota poistetaan
+     * @return montako päivää poistettiin
+     * @example
+     * <pre name="test">
+     * #THROWS Exception
+     *   alustaRekisteri();
+     *   rekisteri.etsi("*",0).size() === 2;
+     *   rekisteri.annaHuomio(maa1).size() === 2;
+     *   rekisteri.poista(maa1) === 1;
+     *   rekisteri.etsi("*",0).size() === 1;
+     *   rekisteri.annaHuomio(maa1).size() === 0;
+     *   rekisteri.annaHuomio(maa2).size() === 3;
+     * </pre>
+     */
+    public int poista(Paiva paiva) {
+        if (paiva == null) return 0;
+        int ret = paivat.poista(paiva.getTunnusNro()); 
+        huomiot.poistaPaivanHuomiot(paiva.getTunnusNro()); 
+        return ret;
+    }
+    
+    /** 
+     * Poistaa tämän huomion 
+     * @param huomio poistettava huomio 
+     * @example
+     * <pre name="test">
+     * #THROWS Exception
+     *   alustaRekisteri();
+     *   rekisteri.annaHuomio(maa1).size() === 2;
+     *   rekisteri.poistaHuomio(sataa11);
+     *   rekisteri.annaHuomio(maa1).size() === 1;
+     */ 
+    public void poistaHuomio(Huomio huomio) {
+        huomiot.poista(huomio);
     }
     
     /**
@@ -82,35 +174,28 @@ public class Rekisteri {
      * @throws SailoException jos tulee ongelma
      * @example
      * <pre name="test">
-     *  #import java.util.*;
+     * #import java.util.*;
+     * #THROWS SailoException
+     * 
+     *  alustaRekisteri();
+     *  Paiva maa3 = new Paiva();
+     *  maa3.rekisteroi();
+     *  rekisteri.lisaa(maa3);
      *  
-     *  Rekisteri rekisteri = new Rekisteri();
-     *  Paiva maanantai = new Paiva(), tiistai = new Paiva(), keskiviikko = new Paiva();
-     *  maanantai.rekisteroi(); tiistai.rekisteroi(); keskiviikko.rekisteroi();
-     *  int tunnus1 = maanantai.getTunnusNro();
-     *  int tunnus2 = tiistai.getTunnusNro();
-     *  Huomio sataa1 = new Huomio(tunnus1); rekisteri.lisaa(sataa1);
-     *  Huomio sataa12 = new Huomio(tunnus1); rekisteri.lisaa(sataa12);
-     *  Huomio sataa2 = new Huomio(tunnus2); rekisteri.lisaa(sataa2);
-     *  Huomio sataa21 = new Huomio(tunnus2); rekisteri.lisaa(sataa21);
-     *  Huomio sataa22 = new Huomio(tunnus2); rekisteri.lisaa(sataa22);
-     *  
-     *  List <Huomio> test;
-     *  test = rekisteri.annaHuomio(keskiviikko);
-     *  test.size() === 0;
-     *  test = rekisteri.annaHuomio(maanantai);
-     *  test.size() === 2;
-     *  test.get(0) == sataa1 === true;
-     *  test.get(1) == sataa12 === true;
-     *  test = rekisteri.annaHuomio(tiistai);
-     *  test.size() === 3;
-     *  test.get(0) == sataa2 === true;
+     *  List<Huomio> loytyneet;
+     *  loytyneet = rekisteri.annaHuomio(maa3);
+     *  loytyneet.size() === 0; 
+     *  loytyneet = rekisteri.annaHuomio(maa1);
+     *  loytyneet.size() === 2; 
+     *  loytyneet.get(0) == sataa11 === true;
+     *  loytyneet.get(1) == sataa12 === true;
+     *  loytyneet = rekisteri.annaHuomio(maa2);
+     *  loytyneet.size() === 3; 
+     *  loytyneet.get(0) == sataa21 === true;
      * </pre>
      */
-
     public List<Huomio> annaHuomio(Paiva paiva) throws SailoException {
         return huomiot.annaHuomio(paiva.getTunnusNro());   
-
     }
     
     /**
@@ -166,6 +251,18 @@ public class Rekisteri {
      * @param ko Indeksi kentälle
      * @return tietorakenne löytyneistä päivistä
      * @throws SailoException Jos tulee virheitä
+     * @example 
+     * <pre name="test">
+     *   #THROWS CloneNotSupportedException, SailoException
+     *   alustaRekisteri();
+     *   Paiva maa3 = new Paiva(); maa3.rekisteroi();
+     *   maa3.aseta(1,"Peruna");
+     *   rekisteri.lisaa(maa3);
+     *   Collection<Paiva> loytyneet = rekisteri.etsi("*Peruna*", 1);
+     *   loytyneet.size() === 1;
+     *   Iterator<Paiva> it = loytyneet.iterator();
+     *   it.next() == maa3 === true; 
+     * </pre>
      */
     public Collection<Paiva> etsi(String haku, int ko) throws SailoException {
         return paivat.etsi(haku, ko);
