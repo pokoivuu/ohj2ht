@@ -37,7 +37,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
-import javafx.scene.chart.XYChart;
 import rekisteri.Huomio;
 import rekisteri.Paiva;
 import rekisteri.Rekisteri;
@@ -58,10 +57,11 @@ public class RekisteriGUIController implements Initializable {
     @FXML private GridPane gridPaiva;
     @FXML private ListChooser<Paiva> chooserPaiva; 
     @FXML private StringGrid<Huomio> tableHuomiot;
+    /*
     @FXML private BarChart sadeChart;
     @FXML private CategoryAxis x;
     @FXML private NumberAxis y;
-
+    */
     
     
     
@@ -200,11 +200,14 @@ public class RekisteriGUIController implements Initializable {
         tableHuomiot.setColumnWidth(2, 60);
         
         tableHuomiot.setOnMouseClicked( e -> { if ( e.getClickCount() > 1 ) tableHuomiot.setEditable(true); } );
-        tableHuomiot.setOnMouseClicked( e -> { if ( e.getClickCount() > 1 ) muokkaaHuomiota(); } );       
+        tableHuomiot.setOnMouseClicked( e -> { if ( e.getClickCount() > 1 ) muokkaaHuomiota(); } );        
         
+        /*
+        XYChart.Series<?,?> series = new XYChart.Series<>();
+        series.setName("Peruna");
+        sadeChart.getData(500);
+        */
         
-        sadeChart.getData(100);
-
     }
     
        
