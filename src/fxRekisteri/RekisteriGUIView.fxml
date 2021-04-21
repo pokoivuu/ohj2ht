@@ -177,7 +177,7 @@
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <BarChart fx:id="barChart" prefHeight="170.0" prefWidth="284.0" title="Sademäärä">
+                                    <BarChart fx:id="sadeChart" prefHeight="170.0" prefWidth="284.0" title="Sademäärä">
                                       <xAxis>
                                         <CategoryAxis side="BOTTOM" fx:id="x" />
                                       </xAxis>
