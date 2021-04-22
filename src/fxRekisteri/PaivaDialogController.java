@@ -20,7 +20,7 @@ import rekisteri.Paiva;
 
 /**
  * @author Teemu Kupiainen, Pauli Koivuniemi
- * @version 22 Apr 2021
+ * @version 22.4.2021
  *
  */
 public class PaivaDialogController implements ModalControllerInterface<Paiva>, Initializable {

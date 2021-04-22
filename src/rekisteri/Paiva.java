@@ -146,6 +146,23 @@ public class Paiva implements Cloneable, Tietue {
       * @param k kuinka monennen kentän arvo asetetaan
       * @param jono jonoa joka asetetaan kentän arvoksi
       * @return null jos asettaminen onnistuu, muuten vastaava virheilmoitus.
+      * @example
+      * <pre name="test">
+      *  Paiva paiva = new Paiva();
+      *  paiva.aseta(1, "Lempäälä") === null;
+      *  paiva.aseta(2, "11:165") === "Ei ole sopiva kellonaika.";
+      *  paiva.aseta(2, "11:00") === null;
+      *  paiva.aseta(3, "111.15.10") === "Väärä päivämäärämuoto.";
+      *  paiva.aseta(3, "1.1.1990") === null;
+      *  paiva.aseta(4, "peruna") === "Lämpötila väärin jono = \"peruna\"";
+      *  paiva.aseta(4, "15") === null;
+      *  paiva.aseta(5, "peruna") === "Sademäärä väärin jono = \"peruna\"";
+      *  paiva.aseta(5, "100") === null;
+      *  paiva.aseta(6, "peruna") === "Kosteus väärin jono = \"peruna\"";
+      *  paiva.aseta(6, "100") === null;
+      *  paiva.aseta(7, "peruna") === "Tuulen nopeus väärin jono = \"peruna\"";
+      *  paiva.aseta(7, "100") === null;
+      * </pre>
      */
     @Override
     public String aseta(int k, String jono) {

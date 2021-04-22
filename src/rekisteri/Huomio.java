@@ -19,7 +19,6 @@ public class Huomio implements Cloneable, Tietue {
     
     private static int seuraava = 1;
     
-    
     /**
      * Alustus
      */
@@ -84,6 +83,10 @@ public class Huomio implements Cloneable, Tietue {
         return huomiotunnus;
     }
     
+    /**
+     * Setteri
+     * @param nro huomion tunnus
+     */
     private void setHuomioId(int nro) {
         huomiotunnus = nro;
         if (huomiotunnus >= seuraava) seuraava = huomiotunnus + 1;
@@ -114,8 +117,7 @@ public class Huomio implements Cloneable, Tietue {
      * @param os tietovirta (outputstream)
      */
     public void tulostus(OutputStream os) {
-        tulostus(new PrintStream(os));
-        
+        tulostus(new PrintStream(os));       
     }
     
     /**
@@ -127,7 +129,6 @@ public class Huomio implements Cloneable, Tietue {
      *   huomio.parse("   1   |  5  |   Sataa paljon  | 12:00");
      *   huomio.toString()    === "1|5|Sataa paljon|12:00";
      * </pre>
-     * 
      */
     @Override
     public String toString() {
@@ -157,7 +158,7 @@ public class Huomio implements Cloneable, Tietue {
      *   huomio.parse(""+(n+5));
      *   huomio.rekisterointi();
      *   huomio.getHuomioId() === n+5+1;
-     *   huomio.toString()     === "" + (n+5+1) + "|5||";
+     *   huomio.toString()     === "" + (n+5+1) + "|5||12:00";
      * </pre>
      */
     public void parse(String rivi) {
@@ -166,7 +167,7 @@ public class Huomio implements Cloneable, Tietue {
             aseta(k, Mjonot.erota(sb, '|'));
         }
     }
-    
+     
     @Override
     public boolean equals (Object obj) {
         if (obj == null) return false;
@@ -223,6 +224,20 @@ public class Huomio implements Cloneable, Tietue {
         }
     }
     
+    /**
+     * Asetetaan kentän sisältö. Mikäli onnistuu, 
+     * palautetaan null, muuten virheteksti.
+     * @param k minkä kentän sisältö
+     * @param s sisältö merkkijonona
+     * @return null jos ok, muuten virhe
+     * @example
+     * <pre name="test">
+     *  Huomio huom = new Huomio();
+     *  huom.aseta(3, "peruna") === "Ei ole sopiva kellonaika.";
+     *  huom.aseta(3, "11:00") === null;
+     *  huom.aseta(4, "peruna") === "Väärä indeksi";
+     * </pre>
+     */
     @Override
     public String aseta(int k, String s) {
         String st = s.trim();
@@ -260,7 +275,6 @@ public class Huomio implements Cloneable, Tietue {
      */
     public static void main(String[] args)  {
         Huomio huom = new Huomio();
-
         huom.testiHuomio(2);
         huom.tulostus(System.out);
 

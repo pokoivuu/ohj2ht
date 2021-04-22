@@ -109,7 +109,6 @@ public class Paivat implements Iterable<Paiva> {
      * p0 == maa2 === true;
      * p0 == maa1 === false;
      * </pre>
-
      */
     public void korvaaLisaa(Paiva paiva) throws SailoException {
         int id = paiva.getTunnusNro();
@@ -140,7 +139,6 @@ public class Paivat implements Iterable<Paiva> {
      * paivat.poista(id1) === 1; paivat.getLkm() === 1; 
      * paivat.poista(id1+3) === 0; paivat.getLkm() === 1; 
      * </pre> 
-
      */
     public int poista(int id) {
         int ind = etsiId(id); 
@@ -151,7 +149,6 @@ public class Paivat implements Iterable<Paiva> {
         alkiot[lkm] = null; 
         muutos = true; 
         return 1; 
-
     }
     
     /**
@@ -247,7 +244,6 @@ public class Paivat implements Iterable<Paiva> {
         } catch ( IOException ex ) {
             throw new SailoException("Tiedoston " + ftied.getName() + " kirjoittamisessa ongelmia");
         }
-
         muutos = false;
     }
     
@@ -395,7 +391,6 @@ public class Paivat implements Iterable<Paiva> {
      *   loytyneet.size() === 1;  
      *   loytyneet.get(0) == paiva3 === true;  
      *   
-     *     
      *   loytyneet = (List<Paiva>)paivat.etsi(null,-1);  
      *   loytyneet.size() === 5;  
      * </pre>
@@ -435,7 +430,6 @@ public class Paivat implements Iterable<Paiva> {
         } 
         return null; 
     } 
-
     
     /**
      * Etsii Päivän id:n perusteella 

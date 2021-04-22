@@ -52,12 +52,12 @@ public class Huomiot implements Iterable<Huomio> {
      * huom1.rekisterointi(); huom2.rekisterointi();
      * huomiot.getLkm() === 0;
      * huomiot.korvaaLisaa(huom1); huomiot.getLkm() === 1;
-     * huomiot.korvaaLisaa(huom1); huomiot.getLkm() === 2;
+     * huomiot.korvaaLisaa(huom1); huomiot.getLkm() === 1;
      * Huomio huom3 = huom1.clone();
      * huom3.aseta(2,"kkk");
      * Iterator<Huomio> i2=huomiot.iterator();
      * i2.next() === huom1;
-     * huomiot.korvaaLisaa(huom3); huomiot.getLkm() === 2;
+     * huomiot.korvaaLisaa(huom3); huomiot.getLkm() === 1;
      * i2=huomiot.iterator();
      * Huomio h = i2.next();
      * h === huom3;
@@ -80,6 +80,25 @@ public class Huomiot implements Iterable<Huomio> {
     /**
      * @param huomio poistettava huomio
      * @return tosi jos löytyi poistettava
+     * @example
+     * <pre name="test">
+     * #THROWS SailoException 
+     * #import java.io.File;
+     *  Huomiot huomiot1 = new Huomiot();
+     *  Huomio sataa21 = new Huomio(); sataa21.testiHuomio(2);
+     *  Huomio sataa11 = new Huomio(); sataa11.testiHuomio(1);
+     *  Huomio sataa22 = new Huomio(); sataa22.testiHuomio(2); 
+     *  Huomio sataa12 = new Huomio(); sataa12.testiHuomio(1); 
+     *  Huomio sataa23 = new Huomio(); sataa23.testiHuomio(2); 
+     *  huomiot1.lisaa(sataa21);
+     *  huomiot1.lisaa(sataa11);
+     *  huomiot1.lisaa(sataa22);
+     *  huomiot1.lisaa(sataa12);
+     *  huomiot1.poista(sataa23) === true; huomiot1.getLkm() === 3;
+     *  List<Huomio> huo = huomiot1.annaHuomio(1);
+     *  huo.size() === 2; 
+     *  huo.get(0) === sataa12;
+     * </pre>
      */
     public boolean poista(Huomio huomio) {
         boolean ret = taulukko.remove(huomio);
@@ -90,6 +109,27 @@ public class Huomiot implements Iterable<Huomio> {
     /**
      * @param tunnusNro päivän viite, mistä huomiot poistetaan
      * @return montako meni poistoon
+     * @example
+     * <pre name="test">
+     *  Huomiot huomiot1 = new Huomiot();
+     *  Huomio sataa21 = new Huomio(); sataa21.testiHuomio(2);
+     *  Huomio sataa11 = new Huomio(); sataa11.testiHuomio(1);
+     *  Huomio sataa22 = new Huomio(); sataa22.testiHuomio(2); 
+     *  Huomio sataa12 = new Huomio(); sataa12.testiHuomio(1); 
+     *  Huomio sataa23 = new Huomio(); sataa23.testiHuomio(2); 
+     *  huomiot1.lisaa(sataa21);
+     *  huomiot1.lisaa(sataa11);
+     *  huomiot1.lisaa(sataa22);
+     *  huomiot1.lisaa(sataa12);
+     *  huomiot1.lisaa(sataa23);
+     *  huomiot1.poistaPaivanHuomiot(2) === 3; huomiot1.getLkm() === 2;
+     *  huomiot1.poistaPaivanHuomiot(3) === 0; huomiot1.getLkm() === 2;
+     *  List<Huomio> huo = huomiot1.annaHuomio(2);
+     *  huo.size() === 0; 
+     *  huo = huomiot1.annaHuomio(1);
+     *  huo.get(0) === sataa11;
+     *  huo.get(1) === sataa12;
+     * </pre>
      */
     public int poistaPaivanHuomiot(int tunnusNro) {
         int n = 0;
@@ -306,7 +346,6 @@ public class Huomiot implements Iterable<Huomio> {
      *  test = huomioita.annaHuomio(4);
      *  test.size() === 1;
      *  test.get(0) == sataa41 === true;
-     *  
      * </pre>
      */
     public List<Huomio> annaHuomio(int tunnus) {

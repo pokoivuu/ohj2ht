@@ -20,7 +20,7 @@ import kanta.Tietue;
 
 /**
  * @author Teemu Kupiainen & Pauli Koivuniemi
- * @version 22 Apr 2021
+ * @version 22.4.2021
  *
  * @param <TYPE> minkä tyyppisiä olioita
  */
