@@ -6,7 +6,7 @@ import java.time.format.ResolverStyle;
 
 /**
  * @author Teemu Kupiainen, Pauli Koivuniemi
- * @version 19 Apr 2021
+ * @version 22 Apr 2021
  *
  */
 public class PvmTarkistus {
@@ -15,6 +15,20 @@ public class PvmTarkistus {
     /**
      * @param pvm tarkistetava päivämäärä
      * @return null jos käy, muuten valittaa
+     * @example
+     * <pre name="test">
+     * #STATICIMPORT
+     * #import java.time.LocalDate;
+     * #import java.time.format.DateTimeFormatter;
+     * #import java.time.format.DateTimeParseException;
+     * #import java.time.format.ResolverStyle;
+     *  tarkistaPvm("koira") === "Väärä päivämäärämuoto.";
+     *  tarkistaPvm("1.25.20") === "Väärä päivämäärämuoto.";
+     *  tarkistaPvm("1.1.01") === "Väärä päivämäärämuoto.";
+     *  tarkistaPvm("500.1.1990") === "Väärä päivämäärämuoto.";
+     *  tarkistaPvm("1.1.50001") === "Väärä päivämäärämuoto.";
+     *  tarkistaPvm("1.1.1990") === null; 
+     * </pre>
      */
     public String tarkistaPvm(String pvm) {
         boolean sopii = false;
@@ -31,10 +45,11 @@ public class PvmTarkistus {
     }
     
     /**
-     * @param klo aika
-     * @return null jos ok, muuten virhe
+     * @param klo kellonaika, joka tuodaan sisään
+     * @return null jos ok, muuten valitusviesti
      * @example
      * <pre name="test">
+     * #STATICIMPORT
      *  tarkistaKello("koira") === "Ei ole sopiva kellonaika.";
      *  tarkistaKello("00:1") === "Ei ole sopiva kellonaika.";
      *  tarkistaKello("56:23") === "Ei ole sopiva kellonaika.";
@@ -46,7 +61,7 @@ public class PvmTarkistus {
      */
     public String tarkistaKello(String klo) {
         if (klo == null || "".equals(klo.trim())) return "";
-        if(!klo.matches("(((0|1)[0-9])|(2[0-3])):[0-5][0-9]")) { return "Ei ole sopiva kellonaika."; }
-        return null;
+        if (!klo.matches("(((0|1)[0-9])|(2[0-3])):[0-5][0-9]")) { return "Ei ole sopiva kellonaika."; }
+        return null;      
     }
 }

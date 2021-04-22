@@ -2,7 +2,7 @@ package kanta;
 
 /**
  * @author Teemu Kupiainen, Pauli Koivuniemi
- * @version 10 Apr 2021
+ * @version 22 Apr 2021
  *
  */
 public interface Tietue {
