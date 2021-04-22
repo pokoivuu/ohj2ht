@@ -103,6 +103,10 @@ public class Paiva implements Cloneable, Tietue {
         return paivaMaara;
     }
     
+    public double getSademaara() {
+        return sadeMaara;
+    }
+    
     /**
      * Merkkijonoalustus tyhjiksi jonoiksi
      * tunnusnro = 0;

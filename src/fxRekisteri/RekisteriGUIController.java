@@ -22,11 +22,8 @@ import fi.jyu.mit.fxgui.ModalController;
 import fi.jyu.mit.fxgui.StringGrid;
 import fi.jyu.mit.fxgui.TextAreaOutputStream;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -39,10 +36,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
-import javafx.scene.chart.XYChart;
 import rekisteri.Huomio;
 import rekisteri.Paiva;
 import rekisteri.Rekisteri;
@@ -63,7 +57,10 @@ public class RekisteriGUIController implements Initializable {
     @FXML private GridPane gridPaiva;
     @FXML private ListChooser<Paiva> chooserPaiva; 
     @FXML private StringGrid<Huomio> tableHuomiot;
-
+    
+    @FXML private BarChart<String, Number> sadeChart;
+    @FXML private CategoryAxis x;
+    
     
     
     
@@ -71,8 +68,8 @@ public class RekisteriGUIController implements Initializable {
     public void initialize(URL url, ResourceBundle bundle) {
         alusta();
     }
-     
-       
+    
+    
     /// Eri menujen käsittelyt alempana
     
     @FXML private void handleMenuTallenna() {
@@ -88,7 +85,8 @@ public class RekisteriGUIController implements Initializable {
     @FXML private void handleMenuLopeta() {
         tallenna();
         Platform.exit();
-    }   
+    }
+    
     
     @FXML private void handleMenuLisaa() {
         //Dialogs.showMessageDialog("Ei toimi vielä");
@@ -153,6 +151,10 @@ public class RekisteriGUIController implements Initializable {
         avaa();
     }
     
+    @FXML private void handleTyhjenna() {
+        sadeChart.getData().clear();
+    }
+    
     /// Alemmat eivät liity suoraan käyttöliittymään
     
     private Rekisteri rekisteri;
@@ -183,7 +185,7 @@ public class RekisteriGUIController implements Initializable {
             if (muutos != null) {
                 muutos.setEditable(false);
                 muutos.setOnMouseClicked(e -> { if ( e.getClickCount() > 1 ) muokkaa(getFieldId(e.getSource(),0)); });  
-                muutos.focusedProperty().addListener((a,o,n) -> kentta = getFieldId(muutos,kentta));
+                muutos.focusedProperty().addListener((a,o,n) -> kentta = getFieldId(muutos, kentta));
             }
         
         int eka = apuhuomio.ensimmainenKentta();
@@ -201,10 +203,9 @@ public class RekisteriGUIController implements Initializable {
         tableHuomiot.setColumnWidth(2, 60);
         
         tableHuomiot.setOnMouseClicked( e -> { if ( e.getClickCount() > 1 ) tableHuomiot.setEditable(true); } );
-        tableHuomiot.setOnMouseClicked( e -> { if ( e.getClickCount() > 1 ) muokkaaHuomiota(); } );       
+        tableHuomiot.setOnMouseClicked( e -> { if ( e.getClickCount() > 1 ) muokkaaHuomiota(); } );        
         
         
-
     }
     
        
@@ -292,6 +293,10 @@ public class RekisteriGUIController implements Initializable {
 
         TietueDialogController.naytaTietue(muutokset, paivaKohta);
         naytaHuomiot(paivaKohta);
+        
+        Series<String, Number> set  = new XYChart.Series<>();
+        set.getData().add(new XYChart.Data<String, Number>(paivaKohta.getPaikka(), paivaKohta.getSademaara()));
+        sadeChart.getData().add(set);
     }
     
     
