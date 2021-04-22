@@ -7,8 +7,8 @@ import kanta.Tietue;
 
 /**
  * Huomio-luokka, rekisteröidään huomioita uniikilla identifikaattorilla
- * @author Teemu Kupiainen, Pauli Koivuniemi
- * @version 11 Mar 2021
+ * @author Pauli Koivuniemi ja Teemu Kupiainen
+ * @version 22.4.2021
  *
  */
 public class Huomio implements Cloneable, Tietue {
@@ -248,6 +248,7 @@ public class Huomio implements Cloneable, Tietue {
         }
     }
     
+
     @Override
     public Huomio clone() throws CloneNotSupportedException { 
         return (Huomio)super.clone();

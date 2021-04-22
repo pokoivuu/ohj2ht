@@ -6,7 +6,7 @@ import java.time.format.ResolverStyle;
 
 /**
  * @author Teemu Kupiainen, Pauli Koivuniemi
- * @version 19 Apr 2021
+ * @version 22 Apr 2021
  *
  */
 public class PvmTarkistus {

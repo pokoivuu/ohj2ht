@@ -2,8 +2,8 @@ package rekisteri;
 
 /**
  * Poikkeusluokka
- * @author Teemu Kupiainen, Pauli Koivuniemi
- * @version 25 Feb 2021
+ * @author Pauli Koivuniemi ja Teemu Kupiainen
+ * @version 22.4.2021
  *
  */
 public class SailoException extends Exception {

@@ -10,8 +10,8 @@ import kanta.Tietue;
 
 /**
  * Päivä-luokka
- * @author Teemu Kupiainen, Pauli Koivuniemi
- * @version 25 Feb 2021
+ * @author Pauli Koivuniemi ja Teemu Kupiainen
+ * @version 22.4.2021
  *
  */
 public class Paiva implements Cloneable, Tietue {
@@ -99,10 +99,18 @@ public class Paiva implements Cloneable, Tietue {
         return paikka;
     }
     
+    /**
+     * Getteri paivamaaralle
+     * @return palauttaa paivamaaran
+     */
     public String getPaivamaara() {
         return paivaMaara;
     }
     
+    /**
+     * Getteri päivän sademäärälle
+     * @return palauttaa sademääräns
+     */
     public double getSademaara() {
         return sadeMaara;
     }
@@ -134,6 +142,11 @@ public class Paiva implements Cloneable, Tietue {
         }
     }
     
+    /**
+      * @param k kuinka monennen kentän arvo asetetaan
+      * @param jono jonoa joka asetetaan kentän arvoksi
+      * @return null jos asettaminen onnistuu, muuten vastaava virheilmoitus.
+     */
     @Override
     public String aseta(int k, String jono) {
         String tjono = jono.trim();
@@ -190,6 +203,11 @@ public class Paiva implements Cloneable, Tietue {
         }              
     }
     
+    /**
+     * Palauttaa k:tta jäsenen kenttää vastaavan kysymyksen
+     * @param k kuinka monennen kentän kysymys palautetaan (0-alkuinen)
+     * @return k:netta kenttää vastaava kysymys
+     */
     @Override
     public String getKysymys(int k) {
         switch (k) {

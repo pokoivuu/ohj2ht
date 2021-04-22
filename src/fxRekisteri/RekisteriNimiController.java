@@ -10,7 +10,7 @@ import javafx.stage.Stage;
  * Dialogi rekisterin nimeä varten
  * 
  * @author Pauli Koivuniemi ja Teemu Kupiainen
- * @version 17.2.2021
+ * @version 22.4.2021
  *
  */
 public class RekisteriNimiController implements ModalControllerInterface<String> {

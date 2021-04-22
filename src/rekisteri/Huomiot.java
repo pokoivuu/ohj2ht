@@ -12,8 +12,8 @@ import java.util.*;
  * Huomiot-luokka, jossa lisätään esim. uusi huomio
  * Luetaan tiedosto, johon tallennetaan
  * Käyttää iterable-rajapintaa
- * @author Teemu Kupiainen, Pauli Koivuniemi
- * @version 11 Mar 2021
+ * @author Pauli Koivuniemi ja Teemu Kupiainen
+ * @version 22.4.2021
  *
  */
 public class Huomiot implements Iterable<Huomio> {

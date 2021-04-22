@@ -46,7 +46,7 @@ import rekisteri.SailoException;
 
 /**
  * @author Teemu Kupiainen, Pauli Koivuniemi
- * @version 17 Feb 2021
+ * @version 22 Apr 2021
  *
  */
 public class RekisteriGUIController implements Initializable {
