@@ -19,8 +19,8 @@ import fi.jyu.mit.ohj2.WildChars;
 
 
 /**
- * @author Teemu Kupiainen, Pauli Koivuniemi
- * @version 25 Feb 2021
+ * @author Pauli Koivuniemi ja Teemu Kupiainen
+ * @version 22.4.2021
  *
  */
 public class Paivat implements Iterable<Paiva> {
